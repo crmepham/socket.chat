@@ -6,6 +6,7 @@ Secure, private, old fashioned-style chat service using Websockets.
 <ul>
   <li><s><i>Valid username</i></s></li>
   <li><s><i>Prevent duplicate usernames</i></s></li>
+  <li>Add chat rooms</li>
   <li>Add room name to page title</li>
   <li><s><i>Display online users on successful login</i></s></li>
   <li>Themes (dark, light, modern, etc.)</li>
