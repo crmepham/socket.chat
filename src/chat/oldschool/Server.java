@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint(value = "/wschat")
@@ -21,6 +18,11 @@ public class Server{
     //notice:not thread-safe
     private static ArrayList<Session> sessionList = new ArrayList<Session>();
     private static List<String[]> userList = new ArrayList<String[]>();
+
+    @OnError
+    public void onError(Session session, Throwable t){
+        sessionList.remove(session);
+    }
 
 
     @OnOpen
@@ -39,27 +41,30 @@ public class Server{
     @OnClose
     public void onClose(Session session){
 
-        int id = Integer.parseInt(session.getId());
+        String id = session.getId();
         String userThatleft = null;
+        String userThatLeftRoom = null;
 
         sessionList.remove(session);
 
-        System.out.println("here1");
         for(int i = 0, size = userList.size(); i < size; i++){
 
-            if(Integer.parseInt(userList.get(i)[0]) == id){ //////// compile error here ///////////////
+            if(userList.get(i)[0].equals(id)){
                 userThatleft = userList.get(i)[1];
+                userThatLeftRoom = userList.get(i)[2];
                 userList.remove(i);
+                break;
             }
         }
-        System.out.println("here2");
+
         try{
-            //asynchronous communication
-            for(Session user : sessionList){
-                user.getBasicRemote().sendText("{\"USERLEFT\":\""+userThatleft+"\"}");
+
+            for(int j = 0, jsize = userList.size(); j<jsize; j++) {
+                if(!userList.get(j)[2].equals(userThatLeftRoom)) continue;
+                sessionList.get(j).getBasicRemote().sendText("{\"USERLEFT\":\""+userThatleft+"\"}");
             }
 
-        }catch(IOException e){}
+        }catch(Exception e){}
     }
 
     @OnMessage
@@ -68,48 +73,74 @@ public class Server{
         JSONObject json = new JSONObject(msg.trim());
 
         //userList.add(new String[]{"1","username","room1"});
-        Boolean singleUser = true;
+        Boolean broadcast = false;
         int userId = 0;
+        String room = null;
         String jsonString = null;
+
         try{
 
             if(json.has("CMD")){
                 String value = json.getString("CMD");
 
                 switch(value){
+                    case "USERLEFT":
+                        jsonString = "{\"USERLEFT\":\""+json.getString("USERLEFTNAME")+"\"}";
+                        room = json.getString("ROOM");
+                        broadcast = true;
+                        break;
+                    case "PING":
+                        // no action necessary
+                        // client pings server to keep session alive
+                        // needs testing
+                        break;
+                    case "MESSAGE":
+                        jsonString = "{\"MESSAGE\":\""+json.getString("BODY")+"\",\"USERNAME\":\""+json.getString("USERNAME")+"\"}";
+                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        room = json.getString("ROOM");
+                        broadcast = true;
+                        break;
                     case "ONLINEUSERS":
 
                         jsonString = buildOnlineUserListJson(userList);
-                        singleUser = true;
                         userId = Integer.parseInt(json.getString("SESSIONID"));
+                        broadcast = false;
                         break;
                     case "ADDUSER":
 
                         userList.add(new String[]{json.getString("SESSIONID"), json.getString("USERNAME"), json.getString("ROOM")});
-                        userId = Integer.parseInt(json.getString("SESSIONID"));
                         jsonString = "{\"RSP\":\"WELCOME\"}";
-                        singleUser = true;
-                        System.out.print("here1");
+                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        broadcast = false;
+                        break;
+                    case "NOTIFYOFNEWUSER":
+                        String username = json.getString("USERNAME");
+                        jsonString = "{\"NOTIFYOFNEWUSER\":\""+username+"\"}";
+                        room = json.getString("ROOM");
+                        broadcast = true;
                         break;
                 }
             }
 
-            // send to one user or all users
-            if(singleUser){
+            // send to one user or all users in this room
+            if(jsonString != null){
+                if(broadcast){
 
-                for(Session user : sessionList){
-                    if(Integer.parseInt(user.getId()) == userId){
-                        user.getBasicRemote().sendText(jsonString);
-                        System.out.print("here2");
-                        break;
+                    for(int j = 0, jsize = userList.size(); j<jsize; j++) {
+                        if(!userList.get(j)[2].equals(room)) continue;
+                        sessionList.get(j).getBasicRemote().sendText(jsonString);
+                    }
+
+                }else{
+
+                    for(Session user : sessionList){
+                        if(Integer.parseInt(user.getId()) == userId){
+                            user.getBasicRemote().sendText(jsonString);
+                            break;
+                        }
                     }
                 }
-
-            }else{
-
             }
-
-
         }catch(IOException e){}
     }
 

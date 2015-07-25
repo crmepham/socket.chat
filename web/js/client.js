@@ -1,6 +1,5 @@
 $(document).ready( function(){
 
-
     // get room name
     var room = document.getElementById("room").innerHTML;
 
@@ -23,7 +22,7 @@ $(document).ready( function(){
     // allow user to start typing as soon as page is loaded
     $("#message").focus();
 
-    $('#message').bind('keyup', function(e) {
+    $("#message").bind('keyup', function(e) {
         if (e.keyCode === 13) { // 13 is enter key
 
             send();
@@ -40,16 +39,17 @@ $(document).ready( function(){
     // store jsonUserList
     var onlineUserList;
 
+    // keep connection alive
+    window.setInterval(function(){
+        webSocket.send("{\"CMD\":\"KEEPALIVE\"}");
+    }, 30000);
+
 
     webSocket.onerror = function(event) {
-
-
 
     };
 
     webSocket.onopen = function(event) {
-
-
 
     };
 
@@ -58,10 +58,25 @@ $(document).ready( function(){
         // incoming messages are always JSON format
         var json = JSON.parse(event.data);
 
-        if(json.hasOwnProperty("USERLEFT")){
-            alert("hereee");
+        if(json.hasOwnProperty("MESSAGE")){
 
-            document.getElementById("messages").innerHTML += json.USERLEFT + " left the room.";
+            document.getElementById("messages").innerHTML += "<p>" + json.USERNAME + ": " + json.MESSAGE + "</p>";
+        }
+
+        if(json.hasOwnProperty("NOTIFYOFNEWUSER")){
+
+            document.getElementById("messages").innerHTML += json.NOTIFYOFNEWUSER + " joined the room.<br>";
+        }
+
+        if(json.hasOwnProperty("USERLEFTNAME")){
+
+            webSocket.send("{\"CMD\":\"USERLEFT\",\"USERLEFTNAME\":\"" + json.USERLEFTNAME + "\",\"ROOM\":\""+json.ROOM+"\"}");
+
+        }
+
+        if(json.hasOwnProperty("USERLEFT")){
+
+            document.getElementById("messages").innerHTML += "<p>" + json.USERLEFT + " left the room.</p>";
 
         }
 
@@ -75,25 +90,28 @@ $(document).ready( function(){
         if(json.hasOwnProperty("ONLINEUSERS")){
 
             if(usernameExists(name, json)){
-                name = window.prompt("Username already in use: (\",<#>$)\n\nEnter a different username\nInvalid characters: (\",<#>$)", "");
+                name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)", "");
                 webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\""+sessionId+"\"}");
+            }else{
+                // update list of online users
+                onlineUserList = updateOnlineUserList(json);
+
+                // send user details (session id, room, username)
+                webSocket.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\""+sessionId+"\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\"}");
             }
 
-            // update list of online users
-            onlineUserList = updateOnlineUserList(json);
 
-            // send user details (session id, room, username)
-            webSocket.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\""+sessionId+"\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\"}");
         }
 
         if(json.hasOwnProperty("RSP")){
 
-            document.getElementById("messages").innerHTML += "Welcome to r/" + room + ".<br>";
-            document.getElementById("messages").innerHTML += "Online users: " + onlineUserList + " " + name;
+            if(json.RSP == "WELCOME"){
+                document.getElementById("messages").innerHTML += "Welcome to r/" + room + ".<br>";
+                document.getElementById("messages").innerHTML += "Online users: " + onlineUserList + " " + name + "<br>";
+                webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\"}");
+            }
         }
-
     };
-
 
     function updateOnlineUserList(json){
         var list = "";
@@ -105,14 +123,12 @@ $(document).ready( function(){
 
     function usernameExists(name, json){
 
-            for(var i in json.ONLINEUSERS){
-                if(json.ONLINEUSERS[i].USERNAME == name) return true;
-            }
+        for(var i in json.ONLINEUSERS){
+            if(json.ONLINEUSERS[i].USERNAME == name) return true;
+        }
 
         return false;
-
     }
-
 
     function isValidUsername(name){
         var fname = name.trim();
@@ -126,93 +142,29 @@ $(document).ready( function(){
             }
 
         }
-
-
-
-
         return true;
     }
 
-
-
-
-
-
-
-
-    function onMessage(event) {
-        //document.getElementById('messages').innerHTML
-        //+= '<p>' + event.data + '</p>';
-
-        var jsonObj = JSON.parse(event.data);
-
-        if(jsonObj.hasOwnProperty("onlineUsers")){
-
-            var userListString = "";
-            for(var user in jsonObj.onlineUsers){
-                userListString += jsonObj.onlineUsers[user] + " ";
-            }
-
-            document.getElementById('messages').innerHTML
-                += "<p><i><span class='server'>Online users:  " + userListString + ".</span></i></p>";
-        }
-
-        if(jsonObj.hasOwnProperty("server")){
-
-            var server = jsonObj.server;
-
-            document.getElementById('messages').innerHTML
-                += "<p><i><span class='server'>> " + server + " left the chat.</span></i></p>";
-        }
-        if(jsonObj.hasOwnProperty("newUser")){
-
-            var newUser = jsonObj.newUser;
-
-            if(newUser != name)
-                document.getElementById('messages').innerHTML
-                    += "<p><i><span class='server'>> " + newUser + " joined the chat.</span></i></p>";
-
-        }
-        if(jsonObj.hasOwnProperty("name")){
-
-            var message = "<span class='you'>" + jsonObj.name + ": </span> "+ jsonObj.message;
-            if(jsonObj.name != name) message = "<span class='sender'>" + jsonObj.name + ": </span>" + jsonObj.message;
-
-            document.getElementById('messages').innerHTML
-                += '<p>' + message+'</p>';
-
-        }
-
-
-        if(jsonObj.hasOwnProperty("message")){
-
-            document.getElementById('messages').innerHTML
-                += '<p>' + jsonObj.message+'</p>';
-
-        }
-
-
-        $cont[0].scrollTop = $cont[0].scrollHeight;
-    }
-
-    function onOpen(event) {
-        document.getElementById('messages').innerHTML
-            += '<i>Connection established</i>';
-
-        var send = "{\"newUser\":\""+name+"\"}";
-        webSocket.send(send);
-    }
-
-    function onError(event) {
-        alert(event.data);
-    }
-
     function send() {
-        var message = document.getElementById('message').value.replace("\"", "&quot;");
-        var str = "{\"name\":\""+name+"\",\"message\":\""+message+"\"}";
-        //var jsonObj = JSON.parse(str);
-        //var txt = "<span class=\"you\">"+name+": </span>" + document.getElementById('message').value;
-        webSocket.send(str);
+
+        var msg = document.getElementById('message').value;
+        msg = sanitizeMessage(msg);
+        if(isValidMessage(msg)){
+            webSocket.send("{\"CMD\":\"MESSAGE\",\"BODY\":\"" + msg + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\"}");
+            //document.getElementById("messages").innerHTML += "<p>" + name + ": " + msg + "</p>";
+            return false;
+        }
+
+    }
+
+    function isValidMessage(msg){
+        msg = msg.trim();
+        if(msg.length )return true;
         return false;
+    }
+
+    function sanitizeMessage(msg){
+
+        return msg.replace("\"", "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/\//g, "&#x2F;");
     }
 });
