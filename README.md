@@ -9,6 +9,8 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li>Add room name to page title</li>
   <li><s><i>Display online users on successful login</i></s></li>
   <li>Themes (dark, light, modern, etc.)</li>
+  <li>Notify room when user joins.</li>
+  <li>Notify room when user leaves.</li>
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
   <li>Refactor</li>
