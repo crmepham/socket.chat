@@ -1,0 +1,85 @@
+/*reset*/
+*{padding:0;outline:0;border:0;}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body, html {
+    background-color: #000;
+    height: 100%;
+}
+
+iframe, table{
+    border:none;
+}
+
+h1, h2, h3, p, li, a, ul, li, input{
+    font-family: monospace;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: .9em;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    color: #bab7a6;
+}
+p{
+    margin-bottom: 10px;
+}
+.hidden{
+    display:none;
+}
+.sender{
+    color: red;
+}
+.you{
+    color: green;
+}
+.server{
+    color: darkgoldenrod;
+}
+::-webkit-input-placeholder {
+    font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+    font-style: italic;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    font-style: italic;
+}
+
+:-ms-input-placeholder {
+    font-style: italic;
+}
+.maintainSize{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; /* standard */
+}
+.border{
+    border: 1px solid green;
+}
+#message{
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border-top: solid;
+    border-width: thin;
+}
+.main-container{
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+#messages{
+    height: calc(100% - 70px);
+    overflow: auto;
+}
+.send-message{
+    height: 60px;
+}
