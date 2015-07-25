@@ -28,3 +28,9 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li>Invite user in another room to this room</li>
   <li>Invite user in this room to another room</li>
 </ul>
+
+<p><b>Issues:</b></p>
+<ul>
+  <li>Server notifies user when a user leaves a different room</li>
+  <li>Online user list shows users from all rooms</li>
+</ul>
