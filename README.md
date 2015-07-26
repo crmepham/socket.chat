@@ -6,11 +6,11 @@ Secure, private, old fashioned-style chat service using Websockets.
 <ul>
   <li><s><i>Valid username</i></s></li>
   <li><s><i>Prevent duplicate usernames</i></s></li>
-  <li>Add chat rooms</li>
-  <li>Add room name to page title</li>
+  <li><s><i>Add chat rooms</i></s></li>
+  <li><s><i>Add room name to page title</i></s></li>
   <li>Add unread message count to title</li>
   <li><s><i>Display online users on successful login</i></s></li>
-  <li>Themes (dark, light, modern, etc.)</li>
+  <li><s><i>Themes (dark, light, modern, etc.)</i></s></li>
   <li><s><i>Notify room when user joins</i></s></li>
   <li><s><i>Notify room when user leaves</i></s></li>
   <li>Implement HTTPS</li>
@@ -19,10 +19,10 @@ Secure, private, old fashioned-style chat service using Websockets.
 
 <p><b>Commands:</b></p>
 <ul>
-  <li>Change theme</li>
-  <li>Mute user</li>
-  <li>Show online users</li>
-  <li>Clear chat history</li>
+  <li><s><i>Change theme</i></s></li>
+  <li><s><i>Mute user</i></s></li>
+  <li><s><i>Show online users</i></s></li>
+  <li><s><i>Clear chat history</i></s></li>
   <li>Private message another user in this room</li>
   <li>Show rules</li>
   <li>Invite user in another room to this room</li>

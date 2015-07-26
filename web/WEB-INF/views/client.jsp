@@ -10,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="../css/main.css" type="text/css">
+  <link id="theme-link" rel="stylesheet" href="../css/themes/dos.css" type="text/css">
 
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

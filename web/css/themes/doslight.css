@@ -1,0 +1,30 @@
+body, html{
+    background-color: rgba(224, 224, 224, 0.83);
+}
+
+p{
+    font-family: arial;
+    font-weight: bold;
+    font-size: .9em;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+.server{
+    color: #3e570f;
+    font-style: italic;
+}
+.sender{
+
+    color: #b7080a;
+}
+.you{
+    color: #2545b9;
+}
+#message {
+    background-color: transparent;
+    border-top-color: #000000;
+}
+.message-msg p{
+    color: #000;
+}

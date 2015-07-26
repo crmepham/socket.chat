@@ -95,7 +95,7 @@ public class Server{
                         // needs testing
                         break;
                     case "MESSAGE":
-                        jsonString = "{\"MESSAGE\":\""+json.getString("BODY")+"\",\"USERNAME\":\""+json.getString("USERNAME")+"\"}";
+                        jsonString = "{\"MESSAGE\":\""+json.getString("BODY")+"\",\"USERNAME\":\""+json.getString("USERNAME")+"\",\"SESSIONIDMESSAGE\":\""+json.getString("SESSIONID")+"\"}";
                         userId = Integer.parseInt(json.getString("SESSIONID"));
                         room = json.getString("ROOM");
                         broadcast = true;

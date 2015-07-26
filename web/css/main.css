@@ -7,7 +7,6 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 body, html {
-    background-color: #000;
     height: 100%;
 }
 
@@ -27,21 +26,10 @@ h1, h2, h3, p, li, a, ul, li, input{
     -webkit-font-smoothing: antialiased;
     color: #bab7a6;
 }
-p{
-    margin-bottom: 10px;
-}
 .hidden{
     display:none;
 }
-.sender{
-    color: red;
-}
-.you{
-    color: green;
-}
-.server{
-    color: darkgoldenrod;
-}
+
 ::-webkit-input-placeholder {
     font-style: italic;
 }
@@ -65,7 +53,7 @@ p{
     border: 1px solid green;
 }
 #message{
-    background-color: transparent;
+
     width: 100%;
     height: 100%;
     border-top: solid;
@@ -75,11 +63,33 @@ p{
     width: 100%;
     margin: 0 auto;
     padding-top: 10px;
+
 }
 #messages{
     height: calc(100% - 70px);
     overflow: auto;
 }
+#messages::-webkit-scrollbar {
+    width: 1px;
+}
 .send-message{
     height: 60px;
+}
+.message-wrapper{
+    width:100%;
+    min-height: 20px;
+    overflow: auto;
+    margin-bottom: 5px;
+}
+.message-name{
+    width: 110px;
+    height: 20px;
+    text-align: right;
+    float: left;
+    margin-right: 5px;
+}
+.message-msg{
+    width: calc(100% - 160px);
+    min-height: 20px;
+    float: left;
 }
