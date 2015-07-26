@@ -32,7 +32,7 @@ Secure, private, old fashioned-style chat service using Websockets.
 <p><b>Issues:</b></p>
 <ul>
   <li><s><i>Server notifies user when a user leaves a different room</i></s></li>
-  <li>Online user list shows users from all rooms</li>
+  <li><s><i>Online user list shows users from all rooms</i></s></li>
   <li><s><i>User unable to send message if first user in new chat room</i></s></li>
   <li><s><i>Client notifies user they have joined (redundant)</i></s></li>
   <li>Username should only be taken if in same room</li>
