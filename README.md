@@ -11,8 +11,8 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li>Add unread message count to title</li>
   <li><s><i>Display online users on successful login</i></s></li>
   <li>Themes (dark, light, modern, etc.)</li>
-  <li><s><i>Notify room when user joins.</i></s></li>
-  <li><s><i>Notify room when user leaves.</i></s></li>
+  <li><s><i>Notify room when user joins</i></s></li>
+  <li><s><i>Notify room when user leaves</i></s></li>
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
 </ul>
@@ -31,6 +31,7 @@ Secure, private, old fashioned-style chat service using Websockets.
 
 <p><b>Issues:</b></p>
 <ul>
+  <li><s><i>Allow only numbers, letters and spaces in room names</i></s></li>
   <li><s><i>Server notifies user when a user leaves a different room</i></s></li>
   <li><s><i>Online user list shows users from all rooms</i></s></li>
   <li><s><i>User unable to send message if first user in new chat room</i></s></li>
