@@ -15,7 +15,6 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li><s><i>Notify room when user leaves.</i></s></li>
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
-  <li>Refactor</li>
 </ul>
 
 <p><b>Commands:</b></p>
@@ -23,10 +22,11 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li>Change theme</li>
   <li>Show online users</li>
   <li>Clear chat history</li>
-  <li>Private message another user</li>
+  <li>Private message another user in this room</li>
   <li>Show rules</li>
   <li>Invite user in another room to this room</li>
   <li>Invite user in this room to another room</li>
+  <li>Ping server</li>
 </ul>
 
 <p><b>Issues:</b></p>
