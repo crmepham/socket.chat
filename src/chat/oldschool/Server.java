@@ -74,7 +74,7 @@ public class Server{
 
         //userList.add(new String[]{"1","username","room1"});
         Boolean broadcast = false;
-        int userId = 0;
+        int userId = -1;
         String room = null;
         String jsonString = null;
 
@@ -101,8 +101,8 @@ public class Server{
                         broadcast = true;
                         break;
                     case "ONLINEUSERS":
-
-                        jsonString = buildOnlineUserListJson(userList);
+                        room = json.getString("ROOM");
+                        jsonString = buildOnlineUserListJson(userList, room);
                         userId = Integer.parseInt(json.getString("SESSIONID"));
                         broadcast = false;
                         break;
@@ -117,6 +117,7 @@ public class Server{
                         String username = json.getString("USERNAME");
                         jsonString = "{\"NOTIFYOFNEWUSER\":\""+username+"\"}";
                         room = json.getString("ROOM");
+                        userId = Integer.parseInt(json.getString("SESSIONID"));
                         broadcast = true;
                         break;
                 }
@@ -128,6 +129,7 @@ public class Server{
 
                     for(int j = 0, jsize = userList.size(); j<jsize; j++) {
                         if(!userList.get(j)[2].equals(room)) continue;
+                        if(json.getString("CMD").equals("NOTIFYOFNEWUSER") && Integer.parseInt(userList.get(j)[0]) == userId) continue;
                         sessionList.get(j).getBasicRemote().sendText(jsonString);
                     }
 
@@ -144,7 +146,7 @@ public class Server{
         }catch(IOException e){}
     }
 
-    private String buildOnlineUserListJson(List<String[]> list){
+    private String buildOnlineUserListJson(List<String[]> list, String room){
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         sb.append("\"ONLINEUSERS\":");
@@ -153,6 +155,7 @@ public class Server{
         for(int i = 0, size = list.size(); i <size; i++){
 
             String[] user = list.get(i);
+            if(!user[2].equals(room)) continue;
 
                 if(i == size-1){
                     sb.append("{\"SESSIONID\":\"" + user[0] + "\",\"USERNAME\":\"" + user[1] + "\",\"ROOM\":\"" + user[2] + "\"}");

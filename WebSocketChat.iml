@@ -19,9 +19,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.53" level="application_server_libraries" />
-    <orderEntry type="library" name="org.json" level="project" />
+    <orderEntry type="library" name="WebSocket-1.0" level="project" />
+    <orderEntry type="library" name="Tomcat 7.0.53" level="application_server_libraries" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="jstl-1.2" level="project" />
   </component>
 </module>

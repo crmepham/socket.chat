@@ -76,14 +76,14 @@ $(document).ready( function(){
 
         if(json.hasOwnProperty("USERLEFT")){
 
-            document.getElementById("messages").innerHTML += "<p>" + json.USERLEFT + " left the room.</p>";
+            document.getElementById("messages").innerHTML += json.USERLEFT + " left the room.";
 
         }
 
         // if json has SESSIONID then request a list of online users
         if(json.hasOwnProperty("SESSIONID")){
             sessionId = json.SESSIONID;
-            webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\""+sessionId+"\"}");
+            webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\""+sessionId+"\",\"ROOM\":\""+room+"\"}");
 
         }
 
@@ -91,7 +91,7 @@ $(document).ready( function(){
 
             if(usernameExists(name, json)){
                 name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)", "");
-                webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\""+sessionId+"\"}");
+                webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\""+sessionId+"\",\"ROOM\":\""+room+"\"}");
             }else{
                 // update list of online users
                 onlineUserList = updateOnlineUserList(json);
@@ -108,7 +108,7 @@ $(document).ready( function(){
             if(json.RSP == "WELCOME"){
                 document.getElementById("messages").innerHTML += "Welcome to r/" + room + ".<br>";
                 document.getElementById("messages").innerHTML += "Online users: " + onlineUserList + " " + name + "<br>";
-                webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\"}");
+                webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\",\"SESSIONID\":\""+sessionId+"\"}");
             }
         }
     };

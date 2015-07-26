@@ -3,7 +3,7 @@
 <html lang="en-US" >
 <head>
   <meta charset="ISO-8859-1">
-  <title>add room name here</title>
+  <title>r/${room}</title>
   <meta name="description" content="old school, DOS style, secure and un-tracked chat.">
   <meta name="author" content="Chris Mepham">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
