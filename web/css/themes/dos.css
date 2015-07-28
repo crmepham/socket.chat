@@ -2,12 +2,13 @@ body, html{
     background-color: rgba(0, 0, 0, 0.83);
 }
 
-p{
+p, #message {
     font-family: arial;
     font-weight: bold;
-    font-size: .9em;
+    font-size: 1.0em;
     text-decoration: none;
     -webkit-font-smoothing: antialiased;
+    text-shadow: none;
 }
 .server{
     color: #747009;
@@ -20,10 +21,17 @@ p{
 .you{
     color: dodgerblue;
 }
+.pm, .message-msg-pm{
+    color: fuchsia;
+}
+.pm-sender, .message-msg-pm-sender{
+    color: #970097;
+    font-style: italic;
+}
 #message {
     background-color: transparent;
     border-top-color: #fff;
 }
-.message-msg p{
+.message-msg p, #message{
     color: #bab7a6;
 }

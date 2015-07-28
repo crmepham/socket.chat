@@ -11,9 +11,10 @@ $(document).ready( function(){
         name = window.prompt("Enter username\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
     }
 
+    var url = "ws://localhost:8080/server";
+
     // open connection to server
-    var webSocket = //new WebSocket('ws://crmepham.no-ip.biz:8080/WebSocketChat/wschat');
-        new WebSocket('ws://localhost:8080/wschat');
+    var webSocket = new WebSocket(url);
 
     // keep message window at bottom (most recent messages)
     var $cont = $('#messages');
@@ -31,6 +32,9 @@ $(document).ready( function(){
     // list of muted players
     var muteList = [];
 
+    // store name of last person privately messaged
+    var lastMessageReciever = "";
+
     // keep connection alive
     window.setInterval(function(){
         webSocket.send("{\"CMD\":\"KEEPALIVE\"}");
@@ -39,14 +43,26 @@ $(document).ready( function(){
     // allow user to start typing as soon as page is loaded
     $("#message").focus();
 
+    $("#message").bind('keydown', function(e){
+
+        if(e.keyCode === 9){
+            e.preventDefault();
+            if(lastMessageReciever == ""){
+                $("#message").val("/tell ");
+            }else{
+                $("#message").val("/tell "+lastMessageReciever+" ");
+            }
+
+        }
+    });
     $("#message").bind('keyup', function(e) {
+
         if (e.keyCode === 13) { // 13 is enter key
 
-            var message = $("#message").val();
+            var message = $("#message").val().trim();
 
             // if first character is forward slash then it is a command
             if(message.charAt(0) == '/'){
-
                 var message = message.replace(/\//g,"");
                 var cmds = message.split(" ");
                 var cmd = cmds[0];
@@ -54,6 +70,38 @@ $(document).ready( function(){
 
 
                 switch(cmd){
+                    case "t":
+                    case "tell":
+                        var count = cmds.length;
+                        var msg = "";
+                        for(var i = 2; i<count; i++){
+                            if(i == count-1){
+                                msg += cmds[i];
+                            }else{
+                                msg += cmds[i] + " ";
+                            }
+                        }
+                        if(isOnlineUser(option)){
+                            if(isValidMessage(msg)){
+                                if(option != name){
+                                    lastMessageReciever = option;
+                                    // send message to server where only that user will be sent it
+                                    webSocket.send("{\"CMD\":\"MESSAGEUSER\",\"FROM\":\""+name+"\",\"FROMID\":\""+sessionId+"\",\"TO\":\""+option+"\",\"PM\":\""+msg+"\",\"ROOM\":\""+room+"\"}");
+                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm-sender\">" + name + "</span>:</p></div><p><span class=\"message-msg-pm-sender\"> " + msg + "</span></p></div>";
+                                }else{
+                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">You can not send a message to yourself.</span><p></div></div>";
+                                }
+                            }else{
+                                document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Invalid message.</span><p></div></div>";
+                            }
+
+                        }else{
+                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">User "+option+" is not online.</span><p></div></div>";
+                        }
+                        break;
+                    case "rules":
+                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Rules: 1) Do not spam 2) Be polite to other users 3) Do not use vulgar language.</span><p></div></div>";
+                        break;
                     case "mutelist":
                         if(muteList.length > 0){
                             var muteListString = "";
@@ -88,7 +136,7 @@ $(document).ready( function(){
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "commands":
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Available commands: commands, themes, theme, users, msg, tell, mute, unmute, mutelist, rules, invitein, inviteout, clear.</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Available commands: commands, themes, theme, users, msg, tell, t, mute, unmute, mutelist, rules, clear.</span><p></div></div>";
                         break;
 
                     case "themes":
@@ -109,7 +157,7 @@ $(document).ready( function(){
 
                         break;
                     default:
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Unrecognised command: "+cmd+". Please type /help for a list of commands.</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Unrecognised command: "+cmd+". Please type /commands for a list of commands.</span><p></div></div>";
                         break;
                 }
             }
@@ -129,7 +177,13 @@ $(document).ready( function(){
 
     };
     webSocket.onclose = function(event) {
+
         document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Disconnected.</span><p></div></div>";
+        /*setTimeout(function(){
+            webSocket = new WebSocket(url);
+        }, 3000);*/
+
+
     };
 
     webSocket.onopen = function(event) {
@@ -141,11 +195,16 @@ $(document).ready( function(){
         // incoming messages are always JSON format
         var json = JSON.parse(event.data);
 
+        if(json.hasOwnProperty("MESSAGEUSER")){
+            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm\">" + json.FROM + "</span>:</p></div><div class=\"message-msg-pm\"><p> " + json.MESSAGEUSER + "</p></div></div>";
+        }
+
         if(json.hasOwnProperty("SESSIONIDMESSAGE")){
 
             if(!isMuted(json.USERNAME)){
                 if(json.SESSIONIDMESSAGE.toString() == sessionId){
-                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"you\">" + json.USERNAME + "</span> : </p></div><div class=\"message-msg \"><p>" + json.MESSAGE + "</p></div></div>";
+                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"you\">" + json.USERNAME + "</span>:</p></div><div class=\"message-msg \"><p> " + json.MESSAGE + "</p></div></div>";
+
                 }else{
                     document.getElementById("messages").innerHTML += "<div class=\"message-wrapper\"><div class=\"message-name \"><p><span class=\"sender\">" + json.USERNAME + "</span> : </p></div><div class=\"message-msg \"><p>" + json.MESSAGE + "</p></div></div>";
                 }
@@ -198,11 +257,23 @@ $(document).ready( function(){
 
             if(json.RSP == "WELCOME"){
                 document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\"> Users online: " + onlineUserList + "</span></p></div></div>";
+
+
                 webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\",\"SESSIONID\":\""+sessionId+"\"}");
             }
         }
         $cont[0].scrollTop = $cont[0].scrollHeight;
     };
+
+    function isOnlineUser(option){
+        var onlineUserArray = onlineUserList.split(" ");
+        for(var i = 0, size = onlineUserArray.length; i<size; i++){
+            if(onlineUserArray[i] == option){
+                return true;
+            }
+        }
+        return false;
+    }
 
     function removeUserFromMutedList(username){
         for(var i = 0, size = muteList.length; i<size; i++){

@@ -8,14 +8,15 @@ footer, header, hgroup, menu, nav, section {
 }
 body, html {
     height: 100%;
+    background-color: #181818;
 }
 
 iframe, table{
     border:none;
 }
 
-h1, h2, h3, p, li, a, ul, li, input{
-    font-family: monospace;
+h1, h2, h3, p, li, ul, li, input{
+    font-family: arial;
     font-weight: inherit;
     font-style: inherit;
     font-size: .9em;
@@ -24,12 +25,36 @@ h1, h2, h3, p, li, a, ul, li, input{
     padding: 0;
     margin: 0;
     -webkit-font-smoothing: antialiased;
-    color: #bab7a6;
+}
+h1, h2, .intro p{
+    font-weight: bold;
+    text-shadow: 3px 3px 4px #000;
+}
+h1{
+    color: #dfd7ad;
+    font-size: 4.0em;
+}
+h2{
+    color: #dfd7ad;
+    font-size: 2.0em;
+    margin-top:40px;
+}
+.intro p, a:link, a:hover, a:active, a:visited{
+    color: #dfd7ad;
+    font-size: 1.0em;
+}
+a{
+    text-decoration: underline;
 }
 .hidden{
     display:none;
 }
-
+.center{
+    text-align: center;
+}
+.padding-top{
+    padding-top: 50px;
+}
 ::-webkit-input-placeholder {
     font-style: italic;
 }
@@ -76,20 +101,15 @@ h1, h2, h3, p, li, a, ul, li, input{
     height: 60px;
 }
 .message-wrapper{
-    width:100%;
-    min-height: 20px;
-    overflow: auto;
-    margin-bottom: 5px;
+    overflow: hidden;
 }
 .message-name{
-    width: 110px;
     height: 20px;
-    text-align: right;
+    text-align: left;
     float: left;
     margin-right: 5px;
 }
-.message-msg{
-    width: calc(100% - 160px);
+.message-msg, .message-msg.pm{
     min-height: 20px;
-    float: left;
+    display:flex;
 }

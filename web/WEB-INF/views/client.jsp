@@ -21,15 +21,13 @@
   <div class="main-container maintainSize">
     <div class="container ">
       <div class="row">
-        <div class="col-xs-12" id="messages">
+        <div class="col-xs-12" id="messages"></div>
       </div>
       <div class="row">
-        <div class="col-xs-12 send-message">
-          <input type="text" name="message" id="message" placeholder="message..">
-        </div>
+        <div class="col-xs-12 send-message"><input type="text" name="message" id="message" placeholder="message.."></div>
       </div>
-    </div>
   </div>
+    </div>
   <!-- Latest compiled and minified JavaScript -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script src="../js/jquery.js"></script>

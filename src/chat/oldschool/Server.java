@@ -10,7 +10,7 @@ import java.util.List;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/wschat")
+@ServerEndpoint(value = "/server")
 public class Server{
 
     Session userSession = null;
@@ -34,6 +34,7 @@ public class Server{
 
             // send new user their session id
             session.getBasicRemote().sendText("{\"SESSIONID\":\""+ session.getId() +"\"}");
+
 
         }catch(IOException e){}
     }
@@ -74,18 +75,16 @@ public class Server{
 
         //userList.add(new String[]{"1","username","room1"});
         Boolean broadcast = false;
-        int userId = -1;
+        String userId = "-1";
         String room = null;
         String jsonString = null;
 
-        try{
+        try {
 
-            if(json.has("CMD")){
-                String value = json.getString("CMD");
-
-                switch(value){
+            if (json.has("CMD")) {
+                switch (json.getString("CMD")) {
                     case "USERLEFT":
-                        jsonString = "{\"USERLEFT\":\""+json.getString("USERLEFTNAME")+"\"}";
+                        jsonString = "{\"USERLEFT\":\"" + json.getString("USERLEFTNAME") + "\"}";
                         room = json.getString("ROOM");
                         broadcast = true;
                         break;
@@ -95,55 +94,68 @@ public class Server{
                         // needs testing
                         break;
                     case "MESSAGE":
-                        jsonString = "{\"MESSAGE\":\""+json.getString("BODY")+"\",\"USERNAME\":\""+json.getString("USERNAME")+"\",\"SESSIONIDMESSAGE\":\""+json.getString("SESSIONID")+"\"}";
-                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        jsonString = "{\"MESSAGE\":\"" + json.getString("BODY") + "\",\"USERNAME\":\"" + json.getString("USERNAME") + "\",\"SESSIONIDMESSAGE\":\"" + json.getString("SESSIONID") + "\"}";
+                        userId = json.getString("SESSIONID");
                         room = json.getString("ROOM");
                         broadcast = true;
                         break;
                     case "ONLINEUSERS":
+
                         room = json.getString("ROOM");
                         jsonString = buildOnlineUserListJson(userList, room);
-                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        userId = json.getString("SESSIONID");
                         broadcast = false;
                         break;
                     case "ADDUSER":
-
                         userList.add(new String[]{json.getString("SESSIONID"), json.getString("USERNAME"), json.getString("ROOM")});
                         jsonString = "{\"RSP\":\"WELCOME\"}";
-                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        userId = json.getString("SESSIONID");
                         broadcast = false;
                         break;
                     case "NOTIFYOFNEWUSER":
                         String username = json.getString("USERNAME");
-                        jsonString = "{\"NOTIFYOFNEWUSER\":\""+username+"\"}";
+                        jsonString = "{\"NOTIFYOFNEWUSER\":\"" + username + "\"}";
                         room = json.getString("ROOM");
-                        userId = Integer.parseInt(json.getString("SESSIONID"));
+                        userId = json.getString("SESSIONID");
                         broadcast = true;
+                        break;
+                    case "MESSAGEUSER":
+                        jsonString = "{\"MESSAGEUSER\":\"" + json.getString("PM") + "\",\"FROM\":\"" + json.getString("FROM") + "\"}";
+                        userId = getIdFromUsername(json.getString("TO"));
+                        room = json.getString("ROOM");
+                        broadcast = false;
                         break;
                 }
             }
 
-            // send to one user or all users in this room
-            if(jsonString != null){
-                if(broadcast){
+                // send to one user or all users in this room
+                if (jsonString != null) {
+                    if (broadcast) {
 
-                    for(int j = 0, jsize = userList.size(); j<jsize; j++) {
-                        if(!userList.get(j)[2].equals(room)) continue;
-                        if(json.getString("CMD").equals("NOTIFYOFNEWUSER") && Integer.parseInt(userList.get(j)[0]) == userId) continue;
-                        sessionList.get(j).getBasicRemote().sendText(jsonString);
-                    }
+                        for (int j = 0, jsize = userList.size(); j < jsize; j++) {
+                            if (!userList.get(j)[2].equals(room)) continue;
+                            if (json.getString("CMD").equals("NOTIFYOFNEWUSER") && userList.get(j)[0].equals(userId)) continue;
+                            sessionList.get(j).getBasicRemote().sendText(jsonString);
+                        }
 
-                }else{
-
-                    for(Session user : sessionList){
-                        if(Integer.parseInt(user.getId()) == userId){
-                            user.getBasicRemote().sendText(jsonString);
+                    } else {
+                        for (int i = 0, size = sessionList.size(); i < size; i++) {
+                            if (!sessionList.get(i).getId().equals(userId)) continue;
+                            sessionList.get(i).getBasicRemote().sendText(jsonString);
                             break;
                         }
                     }
                 }
-            }
+
+
         }catch(IOException e){}
+    }
+
+    private String getIdFromUsername(String username){
+        for(int i = 0, size = userList.size(); i<size; i++){
+            if(userList.get(i)[1].equals(username)) return userList.get(i)[0];
+        }
+        return "-1";
     }
 
     private String buildOnlineUserListJson(List<String[]> list, String room){
