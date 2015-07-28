@@ -6,9 +6,9 @@ Socket.chat is a chat room service that uses HTML5 Websockets and Java Endpoint 
 HTTPS/WSS.</p>
 
 <h3>How to use</h3>
-<p>You can join one of the community chat rooms by navigation to <a href="http://socket.chat">socket.chat</a> and
+<p>You can join one of the community chat rooms by navigating to <a href="http://socket.chat">socket.chat</a> and
 clicking on one of the rooms listed.</p>
-<p>You can create your own private chat room using using the following URI format: <b>socket.chat/r/ #any alpha-numeric characters and spaces#</b>. For 
+<p>You can create your own private chat room using the following URI format: <b>socket.chat/r/ #any alpha-numeric characters and spaces#</b>. For 
 example: <b>socket.chat/r/my private chat room</b></p>
 <h3>Current features:</h3>
 <ul>
