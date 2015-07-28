@@ -1,5 +1,20 @@
-# Websocket Chat
-Secure, private, old fashioned-style chat service using Websockets.
+# Websocket Chat (Alpha)
+Chat service using Websockets.
+<h3>How to use</h3>
+<p>You can join of the commnutiy chat rooms by navigation to <a href="socket.chat">socket.chat</a> and
+clicking on one of the rooms listed.</p>
+<p>You can create your own private chat room using using the following URI format: socket.chat/r/ <any alpha-numeric characters and spaces>. For 
+example: socket.chat/r/my private chat room</p>
+<h3>Current features:</h3>
+<ul>
+  <li>Join any room</li>
+  <li>Create any room</li>
+  <li>Change theme</li>
+  <li>See who else is this room</li>
+  <li>Message another user in this room</li>
+  <li>Mute another user in this room</li>
+</ul>
+
 <h3>Features to add:</h3>
 
 <p><b>General:</b></p>
@@ -23,11 +38,8 @@ Secure, private, old fashioned-style chat service using Websockets.
   <li><s><i>Mute user</i></s></li>
   <li><s><i>Show online users</i></s></li>
   <li><s><i>Clear chat history</i></s></li>
-  <li>Private message another user in this room</li>
-  <li>Show rules</li>
-  <li>Invite user in another room to this room</li>
-  <li>Invite user in this room to another room</li>
-  <li>Ping server</li>
+  <li><s><i>Private message another user in this room</i></s></li>
+  <li><s><i>Show rules</i></s></li>
 </ul>
 
 <p><b>Issues:</b></p>
