@@ -4,7 +4,7 @@ Chat service using Websockets.
 <p>You can join of the communtiy chat rooms by navigation to <a href="http://socket.chat">socket.chat</a> and
 clicking on one of the rooms listed.</p>
 <p>You can create your own private chat room using using the following URI format: <b>socket.chat/r/ #any alpha-numeric characters and spaces#</b>. For 
-example: socket.chat/r/my private chat room</p>
+example: <b>socket.chat/r/my private chat room</b></p>
 <h3>Current features:</h3>
 <ul>
   <li>Join any room</li>
@@ -31,31 +31,13 @@ example: socket.chat/r/my private chat room</p>
   <li><b>/clear</b> - clears the chat history</li>
 </ul>
 
-<h3>Features to add:</h3>
-
-<p><b>General:</b></p>
+<p><b>To do:</b></p>
 <ul>
-  <li><s><i>Valid username</i></s></li>
-  <li><s><i>Prevent duplicate usernames</i></s></li>
-  <li><s><i>Add chat rooms</i></s></li>
-  <li><s><i>Add room name to page title</i></s></li>
+  <li>Re-write client</li>	
   <li>Add unread message count to title</li>
-  <li><s><i>Display online users on successful login</i></s></li>
-  <li><s><i>Themes (dark, light, modern, etc.)</i></s></li>
-  <li><s><i>Notify room when user joins</i></s></li>
-  <li><s><i>Notify room when user leaves</i></s></li>
+  <li>Improve server performance</li>	
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
-</ul>
-
-<p><b>Commands:</b></p>
-<ul>
-  <li><s><i>Change theme</i></s></li>
-  <li><s><i>Mute user</i></s></li>
-  <li><s><i>Show online users</i></s></li>
-  <li><s><i>Clear chat history</i></s></li>
-  <li><s><i>Private message another user in this room</i></s></li>
-  <li><s><i>Show rules</i></s></li>
 </ul>
 
 <p><b>Issues:</b></p>
