@@ -30,6 +30,8 @@ example: <b>socket.chat/r/my private chat room</b></p>
   <li><b>/mutelist</b> - displays a list muted users in this room</li>
   <li><b>/rules</b> - displays a list socket.chat rules</li>
   <li><b>/clear</b> - clears the chat history</li>
+  <li><b>UP ARROW</b> - gets last message sent</li>
+  <li><b>TAB</b> - gets last user you private messaged</li>
 </ul>
 
 <p><b>To do:</b></p>
