@@ -11,7 +11,7 @@ $(document).ready( function(){
         name = window.prompt("Enter username\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
     }
 
-    var url = "ws://localhost:8080/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
 
     // open connection to server
     var webSocket = new WebSocket(url);
