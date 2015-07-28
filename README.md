@@ -17,6 +17,20 @@ example: socket.chat/r/my private chat room</p>
   <li>Message history is not stored</li>
 </ul>
 
+<h3>Chat commands:</h3>
+<ul>
+  <li><b>/commands</b> - displays a list of available commands</li>
+  <li><b>/themes</b> - displays a list of available themes</li>
+  <li><b>/theme <themename></b> - changes to specified theme</li>
+  <li><b>/users</b> - displays a list of users in this chat room</li>
+  <li><b>/msg /tell /t <username> <message></b> - sends a private message to specified user in this room</li>
+  <li><b>/mute <username></b> - mutes specified user in this room</li>
+  <li><b>/unmute <username></b> - unmutes specified user in this room</li>
+  <li><b>/mutelist</b> - displays a list muted users in this room</li>
+  <li><b>/rules</b> - displays a list socket.chat rules</li>
+  <li><b>/clear</b> - clears the chat history</li>
+</ul>
+
 <h3>Features to add:</h3>
 
 <p><b>General:</b></p>
