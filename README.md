@@ -41,6 +41,7 @@ example: <b>socket.chat/r/my private chat room</b></p>
 <p><b>To do:</b></p>
 <ul>
   <li>Re-write client</li>
+  <li>Re-connect to server when it disconnects</li>
   <li>Optimise for iOS devices</li>
   <li>Add unread message count to title</li>
   <li>Improve server performance</li>	
