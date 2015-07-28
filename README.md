@@ -1,7 +1,7 @@
 # Websocket Chat (Alpha)
 Chat service using Websockets.
 <h3>How to use</h3>
-<p>You can join of the commnutiy chat rooms by navigation to <a href="socket.chat">socket.chat</a> and
+<p>You can join of the commnutiy chat rooms by navigation to <a href="http://socket.chat">socket.chat</a> and
 clicking on one of the rooms listed.</p>
 <p>You can create your own private chat room using using the following URI format: socket.chat/r/ <any alpha-numeric characters and spaces>. For 
 example: socket.chat/r/my private chat room</p>
@@ -13,6 +13,8 @@ example: socket.chat/r/my private chat room</p>
   <li>See who else is this room</li>
   <li>Message another user in this room</li>
   <li>Mute another user in this room</li>
+  <li>Chat rooms are not listed anywhere, so no one will find your chat room</li>
+  <li>Message history is not stored</li>
 </ul>
 
 <h3>Features to add:</h3>
