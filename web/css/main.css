@@ -84,6 +84,15 @@ a{
     border-top: solid;
     border-width: thin;
 }
+
+#message {
+    font-family: arial;
+    font-weight: bold;
+    font-size: 1.0em;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: none;
+}
 .main-container{
     width: 100%;
     margin: 0 auto;
@@ -94,7 +103,21 @@ a{
     height: calc(100% - 70px);
     overflow: auto;
 }
-#messages::-webkit-scrollbar {
+#online-users{
+    height: calc(100% - 70px);
+    overflow: auto;
+    border-left: 1px solid #4d4d4d;
+    border-left-width: thin;
+
+}
+.list-bullet{
+    position: relative;top: 1px;
+}
+#online-users li{
+    height: 13px;
+    margin-bottom: 5px;
+}
+#messages::-webkit-scrollbar , #online-users::-webkit-scrollbar{
     width: 1px;
 }
 .send-message{

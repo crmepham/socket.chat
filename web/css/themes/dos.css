@@ -2,16 +2,12 @@ body, html{
     background-color: rgba(0, 0, 0, 0.83);
 }
 
-p, #message {
-    font-family: arial;
+
+.server, .you, .sender, .pm, .pm-sender{
     font-weight: bold;
-    font-size: 1.0em;
-    text-decoration: none;
-    -webkit-font-smoothing: antialiased;
-    text-shadow: none;
 }
 .server{
-    color: #747009;
+    color: #dfd344;
     font-style: italic;
 }
 .sender{
@@ -21,17 +17,63 @@ p, #message {
 .you{
     color: dodgerblue;
 }
-.pm, .message-msg-pm{
+
+.message-msg-pm p, .message-msg p{
+    font-weight: normal;
+}
+
+.message-msg p{
+    color: #fff;
+}
+
+
+.pm, .message-msg-pm p{
     color: fuchsia;
 }
+
 .pm-sender, .message-msg-pm-sender{
     color: #970097;
     font-style: italic;
 }
+
+
+
+
+
+
+
+
+
+
+
 #message {
     background-color: transparent;
     border-top-color: #fff;
 }
-.message-msg p, #message{
-    color: #bab7a6;
+#message, .online-users-room, {
+    color: #dfd7ad;
+}
+#online-users p, .message-msg-pm-sender p{
+    color: #fff;
+    font-weight: normal;
+}
+#online-users p{
+    font-size: 1.1em;
+}
+#online-users a:link, a:visited, a:active{
+    text-decoration: none;
+}
+#online-users a:hover{
+    text-decoration: underline;
+}
+#online-users h1{
+    font-size: 1.3em;
+}
+#online-users h2{
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+.online-users-room{
+    font-weight: bold;
+    text-shadow: 3px 3px 4px #000;
 }

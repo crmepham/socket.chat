@@ -21,7 +21,13 @@
   <div class="main-container maintainSize">
     <div class="container ">
       <div class="row">
-        <div class="col-xs-12" id="messages"></div>
+        <div class="col-xs-12 col-md-10 " id="messages"></div>
+        <div class="col-md-2 hidden-xs hidden-sm" id="online-users">
+          <h1><a href="http://socket.chat">Socket.chat</a></h1>
+          <span class="online-users-room">r/${room}</span>
+          <h2>Users online</h2>
+          <div id="onlineUserListWrapper"></div>
+        </div>
       </div>
       <div class="row">
         <div class="col-xs-12 send-message"><input type="text" name="message" id="message" placeholder="message.."></div>

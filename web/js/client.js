@@ -87,7 +87,7 @@ $(document).ready( function(){
                                     lastMessageReciever = option;
                                     // send message to server where only that user will be sent it
                                     webSocket.send("{\"CMD\":\"MESSAGEUSER\",\"FROM\":\""+name+"\",\"FROMID\":\""+sessionId+"\",\"TO\":\""+option+"\",\"PM\":\""+msg+"\",\"ROOM\":\""+room+"\"}");
-                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm-sender\">" + name + "</span>:</p></div><p><span class=\"message-msg-pm-sender\"> " + msg + "</span></p></div>";
+                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm-sender\">" + name + "</span>:</p></div><p><span class=\"message-msg-pm-sender\"> ["+option+"] " + msg + "</span></p></div>";
                                 }else{
                                     document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">You can not send a message to yourself.</span><p></div></div>";
                                 }
@@ -214,7 +214,9 @@ $(document).ready( function(){
         if(json.hasOwnProperty("NOTIFYOFNEWUSER")){
 
             document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">" + json.NOTIFYOFNEWUSER + " joined the room.</span><p></div></div>";
+
             onlineUserList = onlineUserList + " " + json.NOTIFYOFNEWUSER;
+            buildOnlineUserListGUI(onlineUserList);
         }
 
         if(json.hasOwnProperty("USERLEFTNAME")){
@@ -228,6 +230,7 @@ $(document).ready( function(){
 
             document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">" + json.USERLEFT + " left the room.</span></p></div></div>";
             onlineUserList = onlineUserList.replace(json.USERLEFT, "");
+            buildOnlineUserListGUI(onlineUserList);
         }
 
         // if json has SESSIONID then request a list of online users
@@ -245,6 +248,7 @@ $(document).ready( function(){
             }else{
                 // update list of online users
                 onlineUserList = updateOnlineUserList(json) + name;
+                buildOnlineUserListGUI(onlineUserList);
 
                 // send user details (session id, room, username)
                 webSocket.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\""+sessionId+"\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\"}");
@@ -260,10 +264,22 @@ $(document).ready( function(){
 
 
                 webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\",\"SESSIONID\":\""+sessionId+"\"}");
+
             }
         }
         $cont[0].scrollTop = $cont[0].scrollHeight;
     };
+
+    function buildOnlineUserListGUI(onlineUserList){
+        var stringArray = onlineUserList.split(" ");
+        var output = "<ul>";
+        for(var i = 0, size = stringArray.length; i<size; i++){
+            output += "<li>&bull; "+stringArray[i]+"</li>";
+        }
+        output += "</ul>";
+
+        document.getElementById("onlineUserListWrapper").innerHTML = output;
+    }
 
     function isOnlineUser(option){
         var onlineUserArray = onlineUserList.split(" ");
