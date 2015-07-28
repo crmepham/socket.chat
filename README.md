@@ -1,5 +1,6 @@
 # Websocket Chat (Alpha)
 Chat service using Websockets.
+<a href="http://imgur.com/zRTFQ4z"><img src="http://i.imgur.com/zRTFQ4z.png" title="source: imgur.com" /></a>
 <h3>How to use</h3>
 <p>You can join of the communtiy chat rooms by navigation to <a href="http://socket.chat">socket.chat</a> and
 clicking on one of the rooms listed.</p>
