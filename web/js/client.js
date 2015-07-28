@@ -153,7 +153,7 @@ $(document).ready( function(){
                         break;
                     case "users":
 
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Users online: "+onlineUserList+"</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Users online: "+onlineUserList+".</span><p></div></div>";
 
                         break;
                     default:
@@ -229,8 +229,10 @@ $(document).ready( function(){
         if(json.hasOwnProperty("USERLEFT")){
 
             document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">" + json.USERLEFT + " left the room.</span></p></div></div>";
-            onlineUserList = onlineUserList.replace(json.USERLEFT, "");
-            buildOnlineUserListGUI(onlineUserList);
+
+            var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
+            onlineUserList = removedList;
+            buildOnlineUserListGUI(removedList);
         }
 
         // if json has SESSIONID then request a list of online users
@@ -269,6 +271,18 @@ $(document).ready( function(){
         }
         $cont[0].scrollTop = $cont[0].scrollHeight;
     };
+
+    function removeUserFromOnlineList(onlineUserList, userThatLeft){
+
+        var stringArray = onlineUserList.split(" ");
+        var output = "";
+        for(var i = 0, size = stringArray.length; i<size; i++){
+            if(stringArray[i] == userThatLeft) continue;
+            output += stringArray[i] + " ";
+        }
+
+        return output.trim();
+    }
 
     function buildOnlineUserListGUI(onlineUserList){
         var stringArray = onlineUserList.split(" ");
