@@ -1,6 +1,10 @@
 # Websocket Chat (Alpha)
 <a href="http://imgur.com/zRTFQ4z"><img src="http://i.imgur.com/zRTFQ4z.png" title="source: imgur.com" /></a>
 Socket.chat is a chat room service that uses HTML5 Websockets and Java Endpoint to provide a full featured chat. It is private and untracked.
+<h3>What's good about it?</h3>
+<p>It doesn't list chat rooms, so know one will know your chat room exists. It doesn't store any messages on the server. Soon it will be fully encrypted using
+HTTPS/WSS</p>
+
 <h3>How to use</h3>
 <p>You can join of the communtiy chat rooms by navigation to <a href="http://socket.chat">socket.chat</a> and
 clicking on one of the rooms listed.</p>
