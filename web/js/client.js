@@ -76,7 +76,6 @@ $(document).ready( function(){
                 var cmd = cmds[0];
                 var option = cmds[1];
 
-
                 switch(cmd){
                     case "t":
                     case "tell":
