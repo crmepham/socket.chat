@@ -381,7 +381,7 @@ $(document).ready( function(){
 
     function sanitizeMessage(msg){
 
-        return msg.replace("\"", "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;");
+        return msg.replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;");
     }
 
     function changeTheme(option){
