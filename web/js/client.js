@@ -43,6 +43,14 @@ $(document).ready( function(){
     // allow user to start typing as soon as page is loaded
     $("#message").focus();
 
+    $(".name").live("click", function(e){
+        e.preventDefault();
+
+        var name = $(this).text();
+        $("#message").val("/tell " + name + " ");
+        $("#message").focus();
+    });
+
     $("#message").bind('keydown', function(e){
 
         if(e.keyCode === 9){
@@ -196,17 +204,18 @@ $(document).ready( function(){
         var json = JSON.parse(event.data);
 
         if(json.hasOwnProperty("MESSAGEUSER")){
-            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm\">" + json.FROM + "</span>:</p></div><div class=\"message-msg-pm\"><p> " + json.MESSAGEUSER + "</p></div></div>";
+            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm\"><a href=\"#\">" + json.FROM + "</a></span>:</p></div><div class=\"message-msg-pm\"><p> " + json.MESSAGEUSER + "</p></div></div>";
         }
 
         if(json.hasOwnProperty("SESSIONIDMESSAGE")){
 
             if(!isMuted(json.USERNAME)){
                 if(json.SESSIONIDMESSAGE.toString() == sessionId){
-                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"you\">" + json.USERNAME + "</span>:</p></div><div class=\"message-msg \"><p> " + json.MESSAGE + "</p></div></div>";
+
+                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"you\"><a href=\"#\" class=\"name\">" + json.USERNAME + "</a></span>:</p></div><div class=\"message-msg \"><p> " + json.MESSAGE + "</p></div></div>";
 
                 }else{
-                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper\"><div class=\"message-name \"><p><span class=\"sender\">" + json.USERNAME + "</span> : </p></div><div class=\"message-msg \"><p>" + json.MESSAGE + "</p></div></div>";
+                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper\"><div class=\"message-name \"><p><span class=\"sender\"><a href=\"#\" class=\"name\">" + json.USERNAME + "</a></span> : </p></div><div class=\"message-msg \"><p>" + json.MESSAGE + "</p></div></div>";
                 }
             }
         }

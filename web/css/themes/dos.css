@@ -14,8 +14,12 @@ body, html{
 
     color: #57457c;
 }
-.you{
+.you, .you a:link, .you a:visited, .you a:active{
     color: dodgerblue;
+    text-decoration: none;
+}
+.you a:hover{
+    text-decoration: underline;
 }
 
 .message-msg-pm p, .message-msg p{
@@ -35,16 +39,6 @@ body, html{
     color: #970097;
     font-style: italic;
 }
-
-
-
-
-
-
-
-
-
-
 
 #message {
     background-color: transparent;
