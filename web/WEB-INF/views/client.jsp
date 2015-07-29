@@ -17,6 +17,7 @@
   <![endif]-->
 </head>
 <body>
+<p>testing vcs in intellij</p>
   <div id="room" class="hidden">${room}</div>
   <div class="main-container maintainSize">
     <div class="container ">
