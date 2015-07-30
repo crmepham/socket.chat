@@ -3,12 +3,11 @@
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+footer, header, menu, nav, section {
     display: block;
 }
 body, html {
     height: 100%;
-    background-color: #181818;
 }
 
 iframe, table{
@@ -16,59 +15,17 @@ iframe, table{
 }
 
 h1, h2, h3, p, li, ul, li, input{
-    font-family: arial;
+    font-family: arial, serif;
     font-weight: inherit;
     font-style: inherit;
-    font-size: .9em;
+    font-size: 1.0em;
     text-decoration: none;
     list-style-type: none;
     padding: 0;
     margin: 0;
     -webkit-font-smoothing: antialiased;
 }
-h1, h2, .intro p{
-    font-weight: bold;
-    text-shadow: 3px 3px 4px #000;
-}
-h1{
-    color: #dfd7ad;
-    font-size: 4.0em;
-}
-h2{
-    color: #dfd7ad;
-    font-size: 2.0em;
-    margin-top:40px;
-}
-.intro p, a:link, a:hover, a:active, a:visited{
-    color: #dfd7ad;
-    font-size: 1.0em;
-}
-a{
-    text-decoration: underline;
-}
-.hidden{
-    display:none;
-}
-.center{
-    text-align: center;
-}
-.padding-top{
-    padding-top: 50px;
-}
-::-webkit-input-placeholder {
-    font-style: italic;
-}
-:-moz-placeholder { /* Firefox 18- */
-    font-style: italic;
-}
 
-::-moz-placeholder {  /* Firefox 19+ */
-    font-style: italic;
-}
-
-:-ms-input-placeholder {
-    font-style: italic;
-}
 .maintainSize{
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -77,62 +34,63 @@ a{
 .border{
     border: 1px solid green;
 }
-#message{
-
-    width: 100%;
+.fullHeight{
     height: 100%;
-    border-top: solid;
-    border-width: thin;
 }
-
-#message {
-    font-family: arial;
-    font-weight: bold;
-    font-size: 1.0em;
-    text-decoration: none;
-    -webkit-font-smoothing: antialiased;
-    text-shadow: none;
+.heightTop{
+    height: calc(100% - 61px);
 }
-.main-container{
+.heightBottom{
+    height: 40px;
+}
+.hidden{
+    display: none;
+}
+.no-padding{
+    padding: 0;
+}
+#send-message{
+    height: 60px;
+}
+#message-input{
+    padding: 10px;
     width: 100%;
-    margin: 0 auto;
-    padding-top: 10px;
-
 }
-#messages{
-    height: calc(100% - 70px);
-    overflow: auto;
-}
-#online-users{
-    height: calc(100% - 70px);
-    overflow: auto;
-    border-left: 1px solid #4d4d4d;
-    border-left-width: thin;
-
-}
-.list-bullet{
-    position: relative;top: 1px;
-}
-#online-users li{
-    height: 13px;
-    margin-bottom: 5px;
+#message-submit{
+    width: 110px;
+    padding: 10px;
 }
 #messages::-webkit-scrollbar , #online-users::-webkit-scrollbar{
     width: 1px;
 }
-.send-message{
-    height: 60px;
-}
-.message-wrapper{
-    overflow: hidden;
+#messages{
+    height: 100%;
+    overflow: auto;
 }
 .message-name{
     height: 20px;
-    text-align: left;
     float: left;
     margin-right: 5px;
 }
-.message-msg, .message-msg.pm{
+.message-msg{
     min-height: 20px;
     display:flex;
+}
+#online-users{
+    border-left: 1px solid #4d4d4d;
+    height: 100%;
+    overflow: auto;
+    padding-top: 15px;
+}
+.header, .users-online{
+    font-weight: bold;
+}
+.header{
+    font-size: 1.3em;
+}
+.users-online{
+    font-size: 1.2em;
+}
+.username-link{
+    font-size: 0.9em;
 }

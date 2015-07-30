@@ -1,73 +1,47 @@
 body, html{
-    background-color: rgba(0, 0, 0, 0.83);
+    background-color: #181818;
 }
 
-
-.server, .you, .sender, .pm, .pm-sender{
+#message-input{
+    border-top: 1px solid #4d4d4d;
+    color: #fff;
+    background-color: #181818;
+}
+.message-name > .you, .message-name > .sender, .message-name > .server, .message-name > .sent-pm, .message-name > .recieved-pm{
     font-weight: bold;
 }
-.server{
+.you, .sender, .server, .sent-pm, .recieved-pm{
+    text-decoration: none;
+}
+.message-text{
+    color: #fff;
+}
+.you, .you:active, .you:visited, .you:hover{
+    color: dodgerblue;
+}
+.sender, .sender:active, .sender:visited, .sender:hover{
+    color: #027c77;
+}
+.server, .server:visited, .server:active, .server:hover{
     color: #dfd344;
     font-style: italic;
+    font-weight: bold;
 }
-.sender{
-
+.sent-pm, .sent-pm:visited, .sent-pm:active, .sent-pm:hover{
     color: #57457c;
-}
-.you, .you a:link, .you a:visited, .you a:active{
-    color: dodgerblue;
-    text-decoration: none;
-}
-.you a:hover{
-    text-decoration: underline;
-}
-
-.message-msg-pm p, .message-msg p{
-    font-weight: normal;
-}
-
-.message-msg p{
-    color: #fff;
-}
-
-
-.pm, .message-msg-pm p{
-    color: fuchsia;
-}
-
-.pm-sender, .message-msg-pm-sender{
-    color: #970097;
     font-style: italic;
 }
-
-#message {
-    background-color: transparent;
-    border-top-color: #fff;
+.recieved-pm, .recieved-pm:active, .recieved-pm:visited, .recieved-pm:hover{
+    color: fuchsia;
 }
-#message, .online-users-room, {
-    color: #dfd7ad;
-}
-#online-users p, .message-msg-pm-sender p{
+.header, .header:hover{
     color: #fff;
-    font-weight: normal;
 }
-#online-users p{
-    font-size: 1.1em;
+
+#online-users{
+    border-left: 1px solid #4d4d4d;
+    color: #fff;
 }
-#online-users a:link, a:visited, a:active{
-    text-decoration: none;
-}
-#online-users a:hover{
-    text-decoration: underline;
-}
-#online-users h1{
-    font-size: 1.3em;
-}
-#online-users h2{
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-.online-users-room{
-    font-weight: bold;
-    text-shadow: 3px 3px 4px #000;
+.username-link:active, .username-link:visited, .username-link:link, .username-link:hover{
+    color: #fff
 }

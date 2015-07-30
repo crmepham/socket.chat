@@ -11,7 +11,7 @@ $(document).ready( function(){
         name = window.prompt("Enter username\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
     }
 
-    var url = "ws://localhost:8080/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
 
     // open connection to server
     var webSocket = new WebSocket(url);
@@ -41,33 +41,33 @@ $(document).ready( function(){
     }, 30000);
 
     // allow user to start typing as soon as page is loaded
-    $("#message").focus();
+    $("#message-input").focus();
 
     $(".name").live("click", function(e){
         e.preventDefault();
 
         var name = $(this).text();
-        $("#message").val("/tell " + name + " ");
-        $("#message").focus();
+        $("#message-input").val("/tell " + name + " ");
+        $("#message-input").focus();
     });
 
-    $("#message").bind('keydown', function(e){
+    $("#message-input").bind('keydown', function(e){
 
         if(e.keyCode === 9){
             e.preventDefault();
             if(lastMessageReciever == ""){
-                $("#message").val("/tell ");
+                $("#message-input").val("/tell ");
             }else{
-                $("#message").val("/tell "+lastMessageReciever+" ");
+                $("#message-input").val("/tell "+lastMessageReciever+" ");
             }
 
         }
     });
-    $("#message").bind('keyup', function(e) {
+    $("#message-input").bind('keyup', function(e) {
 
         if (e.keyCode === 13) { // 13 is enter key
 
-            var message = $("#message").val().trim();
+            var message = $("#message-input").val().trim();
 
             // if first character is forward slash then it is a command
             if(message.charAt(0) == '/'){
@@ -94,20 +94,20 @@ $(document).ready( function(){
                                     lastMessageReciever = option;
                                     // send message to server where only that user will be sent it
                                     webSocket.send("{\"CMD\":\"MESSAGEUSER\",\"FROM\":\""+name+"\",\"FROMID\":\""+sessionId+"\",\"TO\":\""+option+"\",\"PM\":\""+msg+"\",\"ROOM\":\""+room+"\"}");
-                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm-sender\">" + name + "</span>:</p></div><p><span class=\"message-msg-pm-sender\"> ["+option+"] " + msg + "</span></p></div>";
+                                    document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"sent-pm\" href=\"#\">" + name + ":</a></div><div class=\"message-msg\"><p class=\"sent-pm\"> ["+option+"] " + msg + "</div></div>";
                                 }else{
-                                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">You can not send a message to yourself.</span><p></div></div>";
+                                    document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">You can not send a message to yourself.</div></div>";
                                 }
                             }else{
-                                document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Invalid message.</span><p></div></div>";
+                                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Invalid message.</div></div>";
                             }
 
                         }else{
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">User "+option+" is not online.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">User "+option+" is not online.</div></div>";
                         }
                         break;
                     case "rules":
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Rules: 1) Do not spam 2) Be polite to other users 3) Do not use vulgar language.</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Rules: 1) Do not spam 2) Be polite to other users 3) Do not use vulgar language.</div></div>";
                         break;
                     case "mutelist":
                         if(muteList.length > 0){
@@ -115,39 +115,39 @@ $(document).ready( function(){
                             for(var i = 0, size = muteList.length; i<size; i++){
                                 muteListString += muteList[i] + " ";
                             }
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Users on your mute list: "+muteListString+".</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Users on your mute list: "+muteListString+".</div></div>";
                         }else{
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">No users are muted.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">No users are muted.</div></div>";
                         }
 
                         break;
                     case "unmute":
                         if(option != null && isMuted(option)){
                             removeUserFromMutedList(option);
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">"+option+" was removed from mute list.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">"+option+" was removed from mute list.</div></div>";
                         }else{
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Please specify a user from your mute list to unmute.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Please specify a user from your mute list to unmute.</div></div>";
                         }
                         break;
                     case "mute":
                         if(option == null){
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Please choose a user to mute and type /mute \"username\".</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Please choose a user to mute and type /mute \"username\".</div></div>";
                         }else if(isMuted(option)){
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">"+option+" is already on mute list.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">"+option+" is already on mute list.</div></div>";
                         }else{
                             muteList.push(option);
-                            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">"+option+" was added to mute list.</span><p></div></div>";
+                            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">"+option+" was added to mute list.</div></div>";
                         }
                         break;
                     case "clear":
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "commands":
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Available commands: commands, themes, theme, users, msg, tell, t, mute, unmute, mutelist, rules, clear.</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Available commands: commands, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.</div></div>";
                         break;
 
                     case "themes":
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Available themes: dos, doslight. Select theme using /theme \"themename\"</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Available themes: dos, doslight. Select theme using /theme \"themename\"</div></div>";
                         break;
 
                     case "theme":
@@ -155,27 +155,27 @@ $(document).ready( function(){
                             if(option == "dos" || option =="doslight"){
                                 changeTheme(option);
                             }else {
-                                document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Unrecognised option: " + option + ". Please type /themes for a list of themes.</span><p></div></div>";
+                                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Unrecognised option: " + option + ". Please type /themes for a list of themes.</div></div>";
                             }
                         break;
                     case "users":
-
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Users online: "+onlineUserList+".</span><p></div></div>";
-
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Users online: "+onlineUserList+".</div></div>";
                         break;
                     default:
-                        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Unrecognised command: "+cmd+". Please type /commands for a list of commands.</span><p></div></div>";
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Unrecognised command: "+cmd+". Please type /commands for a list of commands.</div></div>";
                         break;
                 }
             }
+
             send();
             $cont[0].scrollTop = $cont[0].scrollHeight;
-            lastMessage = $("#message").val();
-            $("#message").val('');
+            lastMessage = $("#message-input").val();
+            $("#message-input").val('');
+
 
         }
         if(e.keyCode === 38){
-            $("#message").val(lastMessage);
+            $("#message-input").val(lastMessage);
         }
 
     });
@@ -185,7 +185,7 @@ $(document).ready( function(){
     };
     webSocket.onclose = function(event) {
 
-        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Disconnected.</span><p></div></div>";
+        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Disconnected.</div></div>";
         /*setTimeout(function(){
             webSocket = new WebSocket(url);
         }, 3000);*/
@@ -203,7 +203,7 @@ $(document).ready( function(){
         var json = JSON.parse(event.data);
 
         if(json.hasOwnProperty("MESSAGEUSER")){
-            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"pm\"><a href=\"#\">" + json.FROM + "</a></span>:</p></div><div class=\"message-msg-pm\"><p> " + json.MESSAGEUSER + "</p></div></div>";
+            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"recieved-pm\" href=\"#\">" + json.FROM + "</a></div><div class=\"message-msg\"><p class=\"recieved-pm\">" + json.MESSAGEUSER + "</div></div>";
         }
 
         if(json.hasOwnProperty("SESSIONIDMESSAGE")){
@@ -211,17 +211,17 @@ $(document).ready( function(){
             if(!isMuted(json.USERNAME)){
                 if(json.SESSIONIDMESSAGE.toString() == sessionId){
 
-                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"you\"><a href=\"#\" class=\"name\">" + json.USERNAME + "</a></span>:</p></div><div class=\"message-msg \"><p> " + json.MESSAGE + "</p></div></div>";
+                    document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"you\" href=\"#\">" + json.USERNAME + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + json.MESSAGE + "</div></div>";
 
                 }else{
-                    document.getElementById("messages").innerHTML += "<div class=\"message-wrapper\"><div class=\"message-name \"><p><span class=\"sender\"><a href=\"#\" class=\"name\">" + json.USERNAME + "</a></span> : </p></div><div class=\"message-msg \"><p>" + json.MESSAGE + "</p></div></div>";
+                    document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"sender\" href=\"#\">" + json.USERNAME + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + json.MESSAGE + "</div></div>";
                 }
             }
         }
 
         if(json.hasOwnProperty("NOTIFYOFNEWUSER")){
 
-            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">" + json.NOTIFYOFNEWUSER + " joined the room.</span><p></div></div>";
+            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">" + json.NOTIFYOFNEWUSER + " joined the room.</div></div>";
 
             onlineUserList = onlineUserList + " " + json.NOTIFYOFNEWUSER;
             buildOnlineUserListGUI(onlineUserList);
@@ -236,7 +236,7 @@ $(document).ready( function(){
 
         if(json.hasOwnProperty("USERLEFT")){
 
-            document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">" + json.USERLEFT + " left the room.</span></p></div></div>";
+            document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">" + json.USERLEFT + " left the room.</div></div>";
 
             var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
             onlineUserList = removedList;
@@ -270,7 +270,7 @@ $(document).ready( function(){
         if(json.hasOwnProperty("RSP")){
 
             if(json.RSP == "WELCOME"){
-                document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\"> Users online: " + onlineUserList + "</span></p></div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Users online: " + onlineUserList + "</div></div>";
 
 
                 webSocket.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\""+name+"\",\"ROOM\":\""+room+"\",\"SESSIONID\":\""+sessionId+"\"}");
@@ -296,7 +296,7 @@ $(document).ready( function(){
         var stringArray = onlineUserList.split(" ");
         var output = "<ul>";
         for(var i = 0, size = stringArray.length; i<size; i++){
-            output += "<li>&bull; "+stringArray[i]+"</li>";
+            output += "<li><a href=\"#\" class=\"username-link\">"+stringArray[i]+"</a></li>";
         }
         output += "</ul>";
 
@@ -371,7 +371,7 @@ $(document).ready( function(){
 
     function send() {
 
-        var msg = document.getElementById('message').value;
+        var msg = document.getElementById('message-input').value;
         msg = sanitizeMessage(msg);
         if(isValidMessage(msg)){
             webSocket.send("{\"CMD\":\"MESSAGE\",\"BODY\":\"" + msg + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\"}");
@@ -397,6 +397,6 @@ $(document).ready( function(){
         var link = document.getElementById("theme-link");
         link.href="../css/themes/"+option+".css";
 
-        document.getElementById("messages").innerHTML += "<div class=\"message-wrapper \"><div class=\"message-name \"><p><span class=\"server\">Server :</span></p></div><div class=\"message-msg \"><p><span class=\"server\">Theme changed to " + option + ".</span><p></div></div>";
+        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Theme changed to " + option + ".</div></div>";
     }
 });
