@@ -30,6 +30,9 @@ h1, h2, h3, p, a, input{
 h1{
     font-size: 4.5em;
 }
+.small-title{
+    font-size: 2.5em;
+}
 h2{
     font-size: 2.0em;
 }

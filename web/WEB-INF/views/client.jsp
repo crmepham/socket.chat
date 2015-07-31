@@ -22,24 +22,25 @@
     <div class="container fullHeight">
         <div class="row heightTop">
             <div class="col-xs-12 col-md-10" id="messages"></div>
-                <div class="col-md-2 hidden-xs hidden-sm" id="online-users">
-                    <h1><a class="header" href="http://socket.chat">Socket.chat</a></h1>
-                    <span class="online-users-room">r/${room}</span>
-                    <br><br><br>
-                    <h2 class="users-online">Users online</h2>
+            <div class="col-md-2 hidden-xs hidden-sm" id="online-users">
+                <h1><a class="header" href="http://socket.chat">Socket.chat</a></h1>
+                <span class="online-users-room">r/${room}</span>
+                <br><br><br>
 
-                    <div id="onlineUserListWrapper"></div>
-                </div>
+                <h2 class="users-online">Users online</h2>
+
+                <div id="onlineUserListWrapper"></div>
             </div>
-            <div class="row heightBottom">
-                <div class="col-xs-12 no-padding " id="send-message">
-                    <input type="text" name="message-input" id="message-input" placeholder="message.."><!--<input type="submit" name="submit" id="message-submit" value="send">-->
-                </div>
+        </div>
+        <div class="row heightBottom">
+            <div class="col-xs-12 no-padding " id="send-message">
+                <input type="text" name="message-input" id="message-input" placeholder="message.."><!--<input type="submit" name="submit" id="message-submit" value="send">-->
             </div>
         </div>
     </div>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="../js/client.js"></script>
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="../js/client.js"></script>
 </body>
 </html>
