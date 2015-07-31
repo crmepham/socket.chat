@@ -15,11 +15,13 @@ example: <b>socket.chat/r/my private chat room</b></p>
   <li>Join any room</li>
   <li>Create any room</li>
   <li>Change theme</li>
-  <li>See who else is this room</li>
+  <li>See who else is in this room</li>
   <li>Message another user in this room</li>
   <li>Mute another user in this room</li>
   <li>Chat rooms are not listed anywhere, so no one will find your chat room</li>
   <li>Message history is not stored</li>
+  <li>Clickable links</li>
+  <li>Message notification in title</li>
 </ul>
 
 <h3>Chat commands:</h3>
