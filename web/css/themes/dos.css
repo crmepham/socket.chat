@@ -45,3 +45,9 @@ body, html{
 .username-link:active, .username-link:visited, .username-link:link, .username-link:hover{
     color: #fff
 }
+.message-link:visited, .message-link:link, .message-link:hover{
+    color: #ffffff;
+}
+.message-link:active{
+    color: #525252;
+}

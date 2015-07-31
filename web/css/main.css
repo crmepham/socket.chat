@@ -94,3 +94,8 @@ h1, h2, h3, p, li, ul, li, input{
 .username-link{
     font-size: 0.9em;
 }
+
+.message-link:active, .message-link:visited, .message-link:link, .message-link:hover{
+    text-decoration: underline;
+    font-style: italic;
+}

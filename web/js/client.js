@@ -35,6 +35,18 @@ $(document).ready( function(){
     // store name of last person privately messaged
     var lastMessageReciever = "";
 
+    // store count of new messages not yet seen
+    var notificationCounter = 0;
+
+    // if window focused
+    var windowFocused = true;
+
+    // clear notification counter when on window
+    $(window).focus(function(){
+       document.title = "r/"+room;
+        notificationCounter = 0;
+    });
+
     // keep connection alive
     window.setInterval(function(){
         webSocket.send("{\"CMD\":\"KEEPALIVE\"}");
@@ -43,7 +55,7 @@ $(document).ready( function(){
     // allow user to start typing as soon as page is loaded
     $("#message-input").focus();
 
-    $(".name").live("click", function(e){
+    $(".message-name").live("click", function(e){
         e.preventDefault();
 
         var name = $(this).text();
@@ -142,8 +154,8 @@ $(document).ready( function(){
                     case "clear":
                         document.getElementById("messages").innerHTML = "";
                         break;
-                    case "commands":
-                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Available commands: commands, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.</div></div>";
+                    case "help":
+                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Available help: commands, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.</div></div>";
                         break;
 
                     case "themes":
@@ -215,7 +227,10 @@ $(document).ready( function(){
 
                 }else{
                     document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"sender\" href=\"#\">" + json.USERNAME + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + json.MESSAGE + "</div></div>";
+                    updateNotificationTitle();
+
                 }
+
             }
         }
 
@@ -280,6 +295,34 @@ $(document).ready( function(){
         $cont[0].scrollTop = $cont[0].scrollHeight;
     };
 
+    function updateNotificationTitle(){
+
+        updateNotificationCounter();
+        if(notificationCounter > 0){
+            document.title = "("+notificationCounter+") " + "r/" + room;
+        }else{
+            document.title = "r/" + room;
+        }
+
+    }
+
+    function updateNotificationCounter(){
+        isWindowFocused();
+        if(windowFocused){
+            notificationCounter = 0;
+        }else{
+            notificationCounter += 1;
+        }
+
+    }
+
+    function isWindowFocused(){
+        $(window).focus(function() {
+            windowFocused = true;
+        }).blur(function() {
+            windowFocused = false;
+        });
+    }
     function removeUserFromOnlineList(onlineUserList, userThatLeft){
 
         var stringArray = onlineUserList.split(" ");
@@ -317,14 +360,6 @@ $(document).ready( function(){
         for(var i = 0, size = muteList.length; i<size; i++){
             if(muteList[i] == username){
                 muteList.splice(i,1);
-            }
-        }
-    }
-
-    function isMutedIndex(username){
-        for(var i = 0, size = muteList.length; i<size; i++){
-            if(muteList[i] == username){
-                return i;
             }
         }
     }
@@ -374,11 +409,34 @@ $(document).ready( function(){
         var msg = document.getElementById('message-input').value;
         msg = sanitizeMessage(msg);
         if(isValidMessage(msg)){
-            webSocket.send("{\"CMD\":\"MESSAGE\",\"BODY\":\"" + msg + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\"}");
+           msg = linkify(msg);
+            //jsonMsg = JSON.stringify({'CMD':'MESSAGE','BODY':msg,'ROOM':room,'SESSIONID':sessionId,'USERNAME':name});
+            //alert(jsonMsg);
+            //WebSocket.send(jsonMsg);
+            //WebSocket.send("{'CMD':'MESSAGE','BODY':'"+msg+"','ROOM':'"+room+"','SESSIONID':'"+sessionId+"','USERNAME':'"+name+"'}");
+            webSocket.send("{\"CMD\":\"MESSAGE\",\"BODY\":\""+msg+"\",\"ROOM\":\""+room+"\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\"}");
             //document.getElementById("messages").innerHTML += "<p>" + name + ": " + msg + "</p>";
             return false;
         }
 
+    }
+
+    function linkify(inputText) {
+        var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+        //URLs starting with http://, https://, or ftp://
+        replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+        replacedText = inputText.replace(replacePattern1, "<a class='message-link' href='$1' target='_blank'>$1</a>");
+
+        //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+        replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+        replacedText = replacedText.replace(replacePattern2, "$1<a class='message-link' href='http://$2' target='_blank'>$2</a>");
+
+        //Change email addresses to mailto:: links.
+        replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+        replacedText = replacedText.replace(replacePattern3, "<a class='message-link' href='mailto:$1'>$1</a>");
+
+        return replacedText;
     }
 
     function isValidMessage(msg){
