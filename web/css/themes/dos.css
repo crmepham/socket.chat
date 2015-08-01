@@ -25,7 +25,6 @@ body, html{
 .server, .server:visited, .server:active, .server:hover{
     color: #dfd344;
     font-style: italic;
-    font-weight: bold;
 }
 .sent-pm, .sent-pm:visited, .sent-pm:active, .sent-pm:hover{
     color: #57457c;

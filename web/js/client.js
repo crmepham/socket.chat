@@ -45,8 +45,10 @@ $(document).ready(function () {
 
     var url = "ws://localhost:8080/server";
 
+    // stores active interval for auto reconnect
     var reconnect;
 
+    // stores Websocket object
     var ws = null;
 
     // open connection to server
@@ -93,6 +95,7 @@ $(document).ready(function () {
                 var serverMessage = "";
                 var muteListString = "";
                 var notServer = false;
+                var noPrint = false;
 
                 switch (cmd) {
                     case "tell":
@@ -143,6 +146,7 @@ $(document).ready(function () {
                         }
                         break;
                     case "clear":
+                        noPrint = true;
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "help":
@@ -168,13 +172,13 @@ $(document).ready(function () {
                         serverMessage = "Unrecognised command: " + cmd + ". Please type /commands for a list of commands.";
                         break;
                 }
-                if (notServer) {
-                    print("sent-pm", name, serverMessage);
-                } else {
-                    print("server", "server", serverMessage);
+                if (!noPrint) {
+                    if (notServer) {
+                        print("sent-pm", name, serverMessage);
+                    } else {
+                        print("server", "server", serverMessage);
+                    }
                 }
-
-
             }
 
             send();
@@ -184,7 +188,6 @@ $(document).ready(function () {
         if (e.keyCode === 38) {
             $("#message-input").val(lastMessage);
         }
-
     });
 
     function start(url) {
@@ -215,8 +218,10 @@ $(document).ready(function () {
             var json = JSON.parse(event.data);
 
             if (json.hasOwnProperty("MESSAGEUSER")) {
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"recieved-pm\" href=\"#\">" + json.FROM + "</a></div><div class=\"message-msg\"><p class=\"recieved-pm\">" + json.MESSAGEUSER + "</div></div>";
+
+                print("recieved-pm", json.FROM, json.MESSAGEUSER);
                 updateNotificationTitle();
+
             }
 
             if (json.hasOwnProperty("SESSIONIDMESSAGE")) {
@@ -224,22 +229,20 @@ $(document).ready(function () {
                 if (!isMuted(json.USERNAME)) {
                     if (json.SESSIONIDMESSAGE.toString() == sessionId) {
 
-                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"you\" href=\"#\">" + json.USERNAME + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + json.MESSAGE + "</div></div>";
-                        updateNotificationTitle();
+                        print("you", json.USERNAME, json.MESSAGE);
+
                     } else {
-                        document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"sender\" href=\"#\">" + json.USERNAME + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + json.MESSAGE + "</div></div>";
+
+                        print("sender", json.USERNAME, json.MESSAGE);
                         updateNotificationTitle();
-
                     }
-
                 }
             }
 
             if (json.hasOwnProperty("NOTIFYOFNEWUSER")) {
 
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">" + json.NOTIFYOFNEWUSER + " joined the room.</div></div>";
-
-                onlineUserList = onlineUserList + " " + json.NOTIFYOFNEWUSER;
+                print("server", "server", json.NOTIFYOFNEWUSER);
+                onlineUserList += " " + json.NOTIFYOFNEWUSER;
                 buildOnlineUserListGUI(onlineUserList);
             }
 
@@ -247,13 +250,11 @@ $(document).ready(function () {
 
                 ws.send("{\"CMD\":\"USERLEFT\",\"USERLEFTNAME\":\"" + json.USERLEFTNAME + "\",\"ROOM\":\"" + json.ROOM + "\"}");
 
-
             }
 
             if (json.hasOwnProperty("USERLEFT")) {
 
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">" + json.USERLEFT + " left the room.</div></div>";
-
+                print("server", "server", json.USERLEFT + " left the room.");
                 var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
                 onlineUserList = removedList;
                 buildOnlineUserListGUI(removedList);
@@ -279,22 +280,19 @@ $(document).ready(function () {
                     // send user details (session id, room, username)
                     ws.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\"}");
                 }
-
-
             }
 
             if (json.hasOwnProperty("RSP")) {
 
                 if (json.RSP == "WELCOME") {
-                    document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"server\" href=\"#\">Server:</a></div><div class=\"message-msg\"><p class=\"server\">Users online: " + onlineUserList + "</div></div>";
 
-
+                    print("server", "server", "Users online: " + onlineUserList);
                     ws.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\"}");
 
                 }
             }
 
-            $cont[0].scrollTop = $cont[0].scrollHeight;
+            viewLatestMessage();
         };
 
     }
@@ -365,15 +363,15 @@ $(document).ready(function () {
     function print(cssClass, name, message) {
 
 
-        switch (name) {
+        switch (cssClass) {
             case "you":
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + ":</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
                 break;
             case "sender":
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + ":</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
                 break;
             default:
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + ":</a></div><div class=\"message-msg\"><p class=\"" + cssClass + "\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"" + cssClass + "\">" + message + "</div></div>";
                 break;
         }
     }
