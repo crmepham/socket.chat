@@ -27,6 +27,10 @@
         <input type="text" name="room" id="create-room-name" placeholder="create a room"><input type="submit" name="submit" id="create-room-submit" value="go to room">
       </form>
       <br><br><br>
+      <form id="random-room-form">
+        <input type="submit" name="submit" id="random-room-submit" value="Send me to a random room">
+      </form>
+      <br><br>
       <h3>or join one of the community chat rooms</h3><br>
       <p><a href="http://socket.chat/r/lobby">r/lobby</a>, <a href="http://socket.chat/r/sports">r/sports</a>, <a href="http://socket.chat/r/music">r/music</a>, <a href="http://socket.chat/r/technology">r/technology</a>, <a href="http://socket.chat/r/programming">r/programming</a>, <a href="http://socket.chat/r/games">r/games</a>, <a href="http://socket.chat/r/meta">r/meta</a>, <a href="http://socket.chat/r/education">r/education</a></p>
       <br><br><br>

@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    var url = "ws://localhost:8080/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
 
     // stores active interval for auto reconnect
     var reconnect;
