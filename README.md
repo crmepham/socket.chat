@@ -42,12 +42,6 @@ example: <b>socket.chat/r/my private chat room</b></p>
 
 <p><b>To do:</b></p>
 <ul>
-  <li>Re-write client</li>
-  <li>Add visible user list for large-screen clients</li>
-  <li>Re-connect to server when it disconnects</li>
-  <li>Optimise for iOS devices</li>
-  <li>Add unread message count to title</li>
-  <li>Improve server performance</li>	
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
 </ul>
