@@ -150,7 +150,7 @@ $(document).ready(function () {
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "help":
-                        serverMessage = "Available help: commands, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.";
+                        serverMessage = "Available commands: help, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.";
                         break;
 
                     case "themes":
@@ -176,7 +176,7 @@ $(document).ready(function () {
                     if (notServer) {
                         print("sent-pm", name, serverMessage);
                     } else {
-                        print("server", "server", serverMessage);
+                        print("server", "server:", serverMessage);
                     }
                 }
             }
@@ -197,7 +197,7 @@ $(document).ready(function () {
             if (reconnect) {
                 window.clearInterval(reconnect);
                 reconnect = 0;
-                print("server", "server", "reconnect successful");
+                print("server", "server:", "reconnect successful");
             }
         };
 
@@ -207,7 +207,7 @@ $(document).ready(function () {
                 reconnect = setInterval(function () {
                     start(url)
                 }, 3000);
-                print("server", "server", "disconnected. Attempting to reconnect...");
+                print("server", "server:", "disconnected. Attempting to reconnect...");
             }
 
         };
@@ -241,7 +241,7 @@ $(document).ready(function () {
 
             if (json.hasOwnProperty("NOTIFYOFNEWUSER")) {
 
-                print("server", "server", json.NOTIFYOFNEWUSER);
+                print("server", "server:", json.NOTIFYOFNEWUSER + " joined the room.");
                 onlineUserList += " " + json.NOTIFYOFNEWUSER;
                 buildOnlineUserListGUI(onlineUserList);
             }
@@ -254,7 +254,7 @@ $(document).ready(function () {
 
             if (json.hasOwnProperty("USERLEFT")) {
 
-                print("server", "server", json.USERLEFT + " left the room.");
+                print("server", "server:", json.USERLEFT + " left the room.");
                 var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
                 onlineUserList = removedList;
                 buildOnlineUserListGUI(removedList);
@@ -286,7 +286,7 @@ $(document).ready(function () {
 
                 if (json.RSP == "WELCOME") {
 
-                    print("server", "server", "Users online: " + onlineUserList);
+                    print("server", "server:", "Users online: " + onlineUserList);
                     ws.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\"}");
 
                 }

@@ -2,75 +2,51 @@ body, html{
     background-color: #ffffff;
 }
 
-.server, .you, .sender, .pm, .pm-sender{
+#message-input{
+    border-top: 1px solid #000000;
+    color: #000000;
+    background-color: #ffffff;
+}
+.message-name > .you, .message-name > .sender, .message-name > .server, .message-name > .sent-pm, .message-name > .recieved-pm{
     font-weight: bold;
 }
-.server{
-    color: #0ebf0e;
+.you, .sender, .server, .sent-pm, .recieved-pm{
+    text-decoration: none;
+}
+.message-text{
+    color: #000000;
+}
+.you, .you:active, .you:visited, .you:hover{
+    color: dodgerblue;
+}
+.sender, .sender:active, .sender:visited, .sender:hover{
+    color: #027c77;
+}
+.server, .server:visited, .server:active, .server:hover{
+    color: #df9600;
     font-style: italic;
 }
-.sender{
-
+.sent-pm, .sent-pm:visited, .sent-pm:active, .sent-pm:hover{
     color: #57457c;
+    font-style: italic;
 }
-.you, .you a:link, .you a:visited, .you a:active {
-    color: #1a63bf;
-    text-decoration: none;
-}
-.sender, .sender a:link, .sender a:visited, .sender a:active {
-    color: #57457c;
-    text-decoration: none;
-}
-.pm, .pm a:link, .pm a:visited, .pm a:active, .message-msg-pm p {
+.recieved-pm, .recieved-pm:active, .recieved-pm:visited, .recieved-pm:hover{
     color: fuchsia;
-    text-decoration: none;
 }
-.you a:hover, .sender a:hover, .pm a:hover{
-    text-decoration: underline;
-}
-
-.message-msg-pm p, .message-msg p{
-    font-weight: normal;
+.header, .header:hover{
+    color: #181818;
 }
 
-.message-msg p{
-    color: #000;
+#online-users{
+    border-left: 1px solid #4d4d4d;
+    color: #181818;
 }
-
-.pm-sender, .message-msg-pm-sender{
-    color: #970097;
-    font-style: italic;
+.username-link:active, .username-link:visited, .username-link:link, .username-link:hover{
+    color: #181818
 }
-#online-users p, .message-msg-pm-sender p{
-    color: #000;
-    font-weight: normal;
+.message-link:visited, .message-link:link, .message-link:hover{
+    color: #181818;
 }
-#online-users p{
-    font-size: 1.1em;
-}
-#online-users a:link, a:visited, a:active{
-    text-decoration: none;
-    color: #000;
-}
-#online-users a:hover{
-    text-decoration: underline;
-}
-#online-users h1{
-    font-size: 1.3em;
-}
-#online-users h2{
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    color: #000;
-}
-.online-users-room{
-    font-weight: bold;
-    color: #000;
-}
-#message {
-    background-color: transparent;
-    border-top-color: #000;
-}
-#message, .send-message input, .online-users-room, {
-    color: green;
+.message-link:active{
+    color: #525252;
 }
