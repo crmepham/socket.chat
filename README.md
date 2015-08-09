@@ -26,11 +26,11 @@ example: <b>socket.chat/r/my private chat room</b></p>
 
 <h3>Chat commands:</h3>
 <ul>
-  <li><b>/commands</b> - displays a list of available commands</li>
+  <li><b>/help</b> - displays a list of available commands</li>
   <li><b>/themes</b> - displays a list of available themes</li>
   <li><b>/theme #themename#</b> - changes to specified theme</li>
   <li><b>/users</b> - displays a list of users in this chat room</li>
-  <li><b>/msg /tell /t #username# <message></b> - sends a private message to specified user in this room</li>
+  <li><b>/tell #username# <message></b> - sends a private message to specified user in this room</li>
   <li><b>/mute #username#</b> - mutes specified user in this room</li>
   <li><b>/unmute #username#</b> - unmutes specified user in this room</li>
   <li><b>/mutelist</b> - displays a list muted users in this room</li>
