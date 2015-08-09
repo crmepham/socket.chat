@@ -45,13 +45,3 @@ example: <b>socket.chat/r/my private chat room</b></p>
   <li>Implement HTTPS</li>
   <li>Implement secure websockets</li>
 </ul>
-
-<p><b>Issues:</b></p>
-<ul>
-  <li><s><i>Allow only numbers, letters and spaces in room names</i></s></li>
-  <li><s><i>Server notifies user when a user leaves a different room</i></s></li>
-  <li><s><i>Online user list shows users from all rooms</i></s></li>
-  <li><s><i>User unable to send message if first user in new chat room</i></s></li>
-  <li><s><i>Client notifies user they have joined (redundant)</i></s></li>
-  <li><s><i>Username should only be taken if in same room</i></s></li>
-</ul>
