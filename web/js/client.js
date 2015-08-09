@@ -35,12 +35,6 @@ $(document).ready(function () {
     // if window focused
     var windowFocused = true;
 
-    // clear notification counter when on window
-    $(window).focus(function () {
-        document.title = "r/" + room;
-        notificationCounter = 0;
-    });
-
     var themes = ["dos", "doslight"];
 
     var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
@@ -54,8 +48,121 @@ $(document).ready(function () {
     // open connection to server
     start(url);
 
+    function start(url) {
+        ws = new WebSocket(url);
+        ws.onopen = function (event) {
+
+            if (reconnect) {
+                window.clearInterval(reconnect);
+                reconnect = 0;
+                print("server", "server:", "reconnect successful");
+            }
+        };
+
+        ws.onclose = function (event) {
+
+            if (!reconnect) {
+                reconnect = setInterval(function () {
+                    start(url)
+                }, 3000);
+                print("server", "server:", "disconnected. Attempting to reconnect...");
+            }
+
+        };
+
+        ws.onmessage = function (event) {
+
+            // incoming messages are always JSON format
+            var json = JSON.parse(event.data);
+
+            if (json.hasOwnProperty("MESSAGEUSER")) {
+
+                print("recieved-pm", json.FROM, json.MESSAGEUSER);
+                updateNotificationTitle();
+
+            }
+
+            if (json.hasOwnProperty("SESSIONIDMESSAGE")) {
+
+                if (!isMuted(json.USERNAME)) {
+                    if (json.SESSIONIDMESSAGE.toString() == sessionId) {
+
+                        print("you", json.USERNAME, json.MESSAGE);
+
+                    } else {
+
+                        print("sender", json.USERNAME, json.MESSAGE);
+                        updateNotificationTitle();
+                    }
+                }
+            }
+
+            if (json.hasOwnProperty("NOTIFYOFNEWUSER")) {
+
+                print("server", "server:", json.NOTIFYOFNEWUSER + " joined the room.");
+                onlineUserList += " " + json.NOTIFYOFNEWUSER;
+                buildOnlineUserListGUI(onlineUserList);
+            }
+
+            if (json.hasOwnProperty("USERLEFTNAME")) {
+
+                ws.send("{\"CMD\":\"USERLEFT\",\"USERLEFTNAME\":\"" + json.USERLEFTNAME + "\",\"ROOM\":\"" + json.ROOM + "\"}");
+
+            }
+
+            if (json.hasOwnProperty("USERLEFT")) {
+
+                print("server", "server:", json.USERLEFT + " left the room.");
+                var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
+                onlineUserList = removedList;
+                buildOnlineUserListGUI(removedList);
+            }
+
+            // if json has SESSIONID then request a list of online users
+            if (json.hasOwnProperty("SESSIONID")) {
+                sessionId = json.SESSIONID;
+                ws.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
+
+            }
+
+            if (json.hasOwnProperty("ONLINEUSERS")) {
+
+                if (usernameExists(name, json)) {
+                    name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+                    ws.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
+                } else {
+                    // update list of online users
+                    onlineUserList = updateOnlineUserList(json) + name;
+                    buildOnlineUserListGUI(onlineUserList);
+
+                    // send user details (session id, room, username)
+                    ws.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\"}");
+                }
+            }
+
+            if (json.hasOwnProperty("RSP")) {
+
+                if (json.RSP == "WELCOME") {
+
+                    print("server", "server:", "Users online: " + onlineUserList);
+                    ws.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\"}");
+
+                }
+            }
+
+            viewLatestMessage();
+        };
+
+    }
+
     // focus message input
     $("#message-input").focus();
+
+    // clear notification counter when on window
+    $(window).focus(function () {
+        document.title = "r/" + room;
+        notificationCounter = 0;
+    });
 
     // click user to quickly send that user a message
     $(".message-name").live("click", function (e) {
@@ -190,113 +297,6 @@ $(document).ready(function () {
         }
     });
 
-    function start(url) {
-        ws = new WebSocket(url);
-        ws.onopen = function (event) {
-
-            if (reconnect) {
-                window.clearInterval(reconnect);
-                reconnect = 0;
-                print("server", "server:", "reconnect successful");
-            }
-        };
-
-        ws.onclose = function (event) {
-
-            if (!reconnect) {
-                reconnect = setInterval(function () {
-                    start(url)
-                }, 3000);
-                print("server", "server:", "disconnected. Attempting to reconnect...");
-            }
-
-        };
-
-        ws.onmessage = function (event) {
-
-            // incoming messages are always JSON format
-            var json = JSON.parse(event.data);
-
-            if (json.hasOwnProperty("MESSAGEUSER")) {
-
-                print("recieved-pm", json.FROM, json.MESSAGEUSER);
-                updateNotificationTitle();
-
-            }
-
-            if (json.hasOwnProperty("SESSIONIDMESSAGE")) {
-
-                if (!isMuted(json.USERNAME)) {
-                    if (json.SESSIONIDMESSAGE.toString() == sessionId) {
-
-                        print("you", json.USERNAME, json.MESSAGE);
-
-                    } else {
-
-                        print("sender", json.USERNAME, json.MESSAGE);
-                        updateNotificationTitle();
-                    }
-                }
-            }
-
-            if (json.hasOwnProperty("NOTIFYOFNEWUSER")) {
-
-                print("server", "server:", json.NOTIFYOFNEWUSER + " joined the room.");
-                onlineUserList += " " + json.NOTIFYOFNEWUSER;
-                buildOnlineUserListGUI(onlineUserList);
-            }
-
-            if (json.hasOwnProperty("USERLEFTNAME")) {
-
-                ws.send("{\"CMD\":\"USERLEFT\",\"USERLEFTNAME\":\"" + json.USERLEFTNAME + "\",\"ROOM\":\"" + json.ROOM + "\"}");
-
-            }
-
-            if (json.hasOwnProperty("USERLEFT")) {
-
-                print("server", "server:", json.USERLEFT + " left the room.");
-                var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
-                onlineUserList = removedList;
-                buildOnlineUserListGUI(removedList);
-            }
-
-            // if json has SESSIONID then request a list of online users
-            if (json.hasOwnProperty("SESSIONID")) {
-                sessionId = json.SESSIONID;
-                ws.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
-
-            }
-
-            if (json.hasOwnProperty("ONLINEUSERS")) {
-
-                if (usernameExists(name, json)) {
-                    name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
-                    webSocket.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
-                } else {
-                    // update list of online users
-                    onlineUserList = updateOnlineUserList(json) + name;
-                    buildOnlineUserListGUI(onlineUserList);
-
-                    // send user details (session id, room, username)
-                    ws.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\"}");
-                }
-            }
-
-            if (json.hasOwnProperty("RSP")) {
-
-                if (json.RSP == "WELCOME") {
-
-                    print("server", "server:", "Users online: " + onlineUserList);
-                    ws.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\"}");
-
-                }
-            }
-
-            viewLatestMessage();
-        };
-
-    }
-
     function isOnlineUser(option) {
         var onlineUserArray = onlineUserList.split(" ");
         for (var i = 0, size = onlineUserArray.length; i < size; i++) {
@@ -377,31 +377,8 @@ $(document).ready(function () {
     }
 
     function updateNotificationTitle() {
-
-        updateNotificationCounter();
-        if (notificationCounter > 0) {
-            document.title = "(" + notificationCounter + ") " + "r/" + room;
-        } else {
-            document.title = "r/" + room;
-        }
-    }
-
-    function updateNotificationCounter() {
-        isWindowFocused();
-        if (windowFocused) {
-            notificationCounter = 0;
-        } else {
-            notificationCounter += 1;
-        }
-
-    }
-
-    function isWindowFocused() {
-        $(window).focus(function () {
-            windowFocused = true;
-        }).blur(function () {
-            windowFocused = false;
-        });
+        notificationCounter += 1;
+        document.title = "(" + notificationCounter + ") " + "r/" + room;
     }
 
     function removeUserFromOnlineList(onlineUserList, userThatLeft) {
@@ -462,12 +439,12 @@ $(document).ready(function () {
 
     function isValidUsername(name) {
         var fname = name.trim();
-        if (fname.length == 0 || fname.length > 15) {
+        if (fname.length == 0 || fname.length > 15 || fname == "&nbsp;") {
             return false;
         }
         for (var i = 0, len = fname.length; i < len; i++) {
 
-            if (fname.charAt(i) == ' ' || fname.charAt(i) == '<' || fname.charAt(i) == '#' || fname.charAt(i) == '>' || fname.charAt(i) == '$' || fname.charAt(i) == '\'' || fname.charAt(i) == '"') {
+            if (fname.charAt(i) == ' ' || fname.charAt(i) == '<' || fname.charAt(i) == '#' || fname.charAt(i) == '>' || fname.charAt(i) == '$' || fname.charAt(i) == '\'' || fname.charAt(i) == '"' || fname.charAt(i) == ',') {
                 return false;
             }
 

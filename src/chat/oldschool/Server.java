@@ -13,8 +13,6 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/server")
 public class Server{
 
-    Session userSession = null;
-
     //notice:not thread-safe
     private static ArrayList<Session> sessionList = new ArrayList<Session>();
     private static List<String[]> userList = new ArrayList<String[]>();
@@ -27,7 +25,6 @@ public class Server{
 
     @OnOpen
     public void onOpen(Session session){
-        this.userSession = session;
         try{
             // add new user to list of users
             sessionList.add(session);
