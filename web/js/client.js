@@ -46,11 +46,30 @@ $(document).ready(function () {
     // stores Websocket object
     var ws = null;
 
+    // timer counts up to 900 seconds.
+    var afkTimer = 0;
+
+    var afkNotified = false;
+
+
     // open connection to server
     start(url);
 
     function start(url) {
         ws = new WebSocket(url);
+
+        setInterval(function () {
+            ++afkTimer;
+
+            if(afkTimer > 900){
+                // send message to other users that this user is AFK
+                if(!afkNotified){
+                    ws.send(JSON.stringify({cmd:'notifyOfAfkUser', username:name, sessionId:sessionId, room:room}));
+                    afkNotified = true;
+                }
+            }
+        }, 1000);
+
         ws.onopen = function (event) {
 
             if (reconnect) {
@@ -77,6 +96,22 @@ $(document).ready(function () {
 
             // incoming messages are always JSON format
             var json = JSON.parse(event.data);
+
+            if(json.hasOwnProperty("notifyOfAfkUser")){
+                print("server", "server", json.notifyOfAfkUser + " has gone afk.");
+
+                // rebuild online user list
+                onlineUserList = updateOnlineUserListAfkUser(json.notifyOfAfkUser);
+                buildOnlineUserListGUI(onlineUserList);
+            }
+
+            if(json.hasOwnProperty("notifyOfAfkReturnedUser")){
+                print("server", "server", json.notifyOfAfkReturnedUser + " has returned.");
+
+                // rebuild online user list
+                onlineUserList = updateOnlineUserListAfkReturnedUser(json.notifyOfAfkReturnedUser);
+                buildOnlineUserListGUI(onlineUserList);
+            }
 
             if (json.hasOwnProperty("messageUser")) {
 
@@ -155,8 +190,12 @@ $(document).ready(function () {
     // focus message input
     $("#message-input").focus();
 
+    // reset AFK timer
+    $(window).mousemove(function(){userIsActive();});
+
     // clear notification counter when on window
     $(window).focus(function () {
+        userIsActive();
         document.title = "r/" + room;
         notificationCounter = 0;
     });
@@ -189,7 +228,7 @@ $(document).ready(function () {
     });
 
     $("#message-input").bind('keyup', function (e) {
-
+        userIsActive();
         // when user presses RETURN to send message
         if (e.keyCode === 13) { // 13 is enter key
 
@@ -298,6 +337,14 @@ $(document).ready(function () {
             $("#message-input").val(lastMessage);
         }
     });
+
+    function userIsActive(){
+        if(afkTimer > 5 && afkNotified == true){
+            ws.send(JSON.stringify({cmd:'notifyOfAfkReturnedUser', username:name, sessionId:sessionId, room:room}));
+            afkNotified = false;
+        }
+        afkTimer = 0;
+    }
 
     function isOnlineUser(option) {
         var onlineUserArray = onlineUserList.split(" ");
@@ -420,6 +467,30 @@ $(document).ready(function () {
                 return true;
             }
         }
+    }
+
+    function updateOnlineUserListAfkUser(username){
+        var stringArray = onlineUserList.split(" ");
+        var output = "";
+        for (var i = 0, size = stringArray.length; i < size; i++) {
+            if(stringArray[i] == username){
+                stringArray[i] = "[afk]"+username;
+            }
+            output += stringArray[i] + " ";
+        }
+        return output;
+    }
+
+    function updateOnlineUserListAfkReturnedUser(username){
+        var stringArray = onlineUserList.split(" ");
+        var output = "";
+        for (var i = 0, size = stringArray.length; i < size; i++) {
+            if(stringArray[i] == "[afk]" + username){
+                stringArray[i] = username;
+            }
+            output += stringArray[i] + " ";
+        }
+        return output;
     }
 
     function updateOnlineUserList(json) {

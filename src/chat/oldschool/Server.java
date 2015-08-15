@@ -122,6 +122,18 @@ public class Server{
                         room = json.getString("room");
                         broadcast = false;
                         break;
+                    case "notifyOfAfkUser":
+                        jsonString = "{\"notifyOfAfkUser\":\""+ json.getString("username") +"\"}";
+                        userId = json.getString("sessionId");
+                        room = json.getString("room");
+                        broadcast = true;
+                        break;
+                    case "notifyOfAfkReturnedUser":
+                        jsonString = "{\"notifyOfAfkReturnedUser\":\""+ json.getString("username") +"\"}";
+                        userId = json.getString("sessionId");
+                        room = json.getString("room");
+                        broadcast = true;
+                        break;
                 }
             }
 
@@ -130,8 +142,8 @@ public class Server{
                     if (broadcast) {
 
                         for (int j = 0, jsize = userList.size(); j < jsize; j++) {
-                            if (!userList.get(j)[2].equals(room)) continue;
-                            if (json.getString("cmd").equals("notifyOfNewUser") && userList.get(j)[0].equals(userId)) continue;
+                            if (!userList.get(j)[2].equals(room)) continue; // not in this room
+                            if (json.getString("cmd").equals("notifyOfNewUser") && userList.get(j)[0].equals(userId)) continue; // don't notify myself that I joined
                             sessionList.get(j).getBasicRemote().sendText(jsonString);
                         }
 

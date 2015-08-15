@@ -106,3 +106,7 @@ h1, h2, h3, p, li, ul, li, input{
 #theme-selector option{
     margin: 3px;
 }
+.afkUser{
+    font-style: italic;
+    text-decoration: line-through;
+}
