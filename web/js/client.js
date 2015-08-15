@@ -161,8 +161,7 @@ $(document).ready(function () {
         notificationCounter = 0;
     });
 
-    // click user to quickly send that user a message
-    $(".message-name").live("click", function (e) {
+    $(".message-name, .username-link").live("click", function (e) {
         e.preventDefault();
 
         var name = $(this).text();
