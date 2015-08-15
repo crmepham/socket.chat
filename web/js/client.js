@@ -55,6 +55,8 @@ $(document).ready(function () {
 
             if (reconnect) {
                 window.clearInterval(reconnect);
+                // update user list
+                ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
                 reconnect = 0;
                 print("server", "server:", "reconnect successful");
             }
@@ -417,16 +419,16 @@ $(document).ready(function () {
 
     function updateOnlineUserList(json) {
         var list = "";
-        for (var i in json.ONLINEUSERS) {
-            list += json.ONLINEUSERS[i].USERNAME + " ";
+        for (var i in json.onlineUsers) {
+            list += json.onlineUsers[i].username + " ";
         }
         return list;
     }
 
     function usernameExists(name, json) {
 
-        for (var i in json.ONLINEUSERS) {
-            if (json.ONLINEUSERS[i].USERNAME == name) return true;
+        for (var i in json.onlineUsers) {
+            if (json.onlineUsers[i].username == name) return true;
         }
 
         return false;
