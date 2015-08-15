@@ -37,7 +37,8 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    var url = "ws://localhost:8080/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -75,78 +76,72 @@ $(document).ready(function () {
             // incoming messages are always JSON format
             var json = JSON.parse(event.data);
 
-            if (json.hasOwnProperty("MESSAGEUSER")) {
+            if (json.hasOwnProperty("messageUser")) {
 
-                print("recieved-pm", json.FROM, json.MESSAGEUSER);
+                print("recieved-pm", json.from, json.messageUser);
                 updateNotificationTitle();
 
             }
 
-            if (json.hasOwnProperty("SESSIONIDMESSAGE")) {
+            if (json.hasOwnProperty("sessionIdMessage")) {
 
-                if (!isMuted(json.USERNAME)) {
-                    if (json.SESSIONIDMESSAGE.toString() == sessionId) {
+                if (!isMuted(json.username)) {
+                    if (json.sessionIdMessage.toString() == sessionId) {
 
-                        print("you", json.USERNAME, json.MESSAGE);
+                        print("you", json.username, json.message);
 
                     } else {
 
-                        print("sender", json.USERNAME, json.MESSAGE);
+                        print("sender", json.username, json.message);
                         updateNotificationTitle();
                     }
                 }
             }
 
-            if (json.hasOwnProperty("NOTIFYOFNEWUSER")) {
+            if (json.hasOwnProperty("notifyOfNewUser")) {
 
-                print("server", "server:", json.NOTIFYOFNEWUSER + " joined the room.");
-                onlineUserList += " " + json.NOTIFYOFNEWUSER;
+                print("server", "server:", json.notifyOfNewUser + " joined the room.");
+                onlineUserList += " " + json.notifyOfNewUser;
                 buildOnlineUserListGUI(onlineUserList);
             }
 
-            if (json.hasOwnProperty("USERLEFTNAME")) {
-
-                ws.send("{\"CMD\":\"USERLEFT\",\"USERLEFTNAME\":\"" + json.USERLEFTNAME + "\",\"ROOM\":\"" + json.ROOM + "\"}");
-
+            if (json.hasOwnProperty("userLeftName")) {
+                ws.send(JSON.stringify({cmd:'userLeft', userLeftName:json.userLeftName, room:json.room}));
             }
 
-            if (json.hasOwnProperty("USERLEFT")) {
-
-                print("server", "server:", json.USERLEFT + " left the room.");
-                var removedList = removeUserFromOnlineList(onlineUserList, json.USERLEFT);
+            if (json.hasOwnProperty("userLeft")) {
+                print("server", "server:", json.userLeft + " left the room.");
+                var removedList = removeUserFromOnlineList(onlineUserList, json.userLeft);
                 onlineUserList = removedList;
                 buildOnlineUserListGUI(removedList);
             }
 
             // if json has SESSIONID then request a list of online users
-            if (json.hasOwnProperty("SESSIONID")) {
-                sessionId = json.SESSIONID;
-                ws.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
-
+            if (json.hasOwnProperty("sessionId")) {
+                sessionId = json.sessionId;
+                ws.send(JSON.stringify({cmd: 'onlineUsers', sessionId: sessionId, room: room}));
             }
 
-            if (json.hasOwnProperty("ONLINEUSERS")) {
-
-                if (usernameExists(name, json)) {
+            if (json.hasOwnProperty("onlineUsers")) {
+                if (usernameExists(name, json) || name == null) {
                     name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
-                    ws.send("{\"CMD\":\"ONLINEUSERS\",\"SESSIONID\":\"" + sessionId + "\",\"ROOM\":\"" + room + "\"}");
+                    ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
                 } else {
                     // update list of online users
                     onlineUserList = updateOnlineUserList(json) + name;
                     buildOnlineUserListGUI(onlineUserList);
 
                     // send user details (session id, room, username)
-                    ws.send("{\"CMD\":\"ADDUSER\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\"}");
+                    ws.send(JSON.stringify({cmd:'addUser', sessionId:sessionId, username:name, room:room}));
                 }
             }
 
-            if (json.hasOwnProperty("RSP")) {
+            if (json.hasOwnProperty("rsp")) {
 
-                if (json.RSP == "WELCOME") {
+                if (json.rsp == "welcome") {
 
                     print("server", "server:", "Users online: " + onlineUserList);
-                    ws.send("{\"CMD\":\"NOTIFYOFNEWUSER\",\"USERNAME\":\"" + name + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\"}");
-
+                    ws.send(JSON.stringify({cmd:'notifyOfNewUser', username:name, room:room, sessionId:sessionId}));
                 }
             }
 
@@ -211,7 +206,7 @@ $(document).ready(function () {
                         if (isOnlineUser(option)) {
                             if (isValidPrivateMessage(option, msg)) {
                                 lastMessageReciever = option;
-                                ws.send("{\"CMD\":\"MESSAGEUSER\",\"FROM\":\"" + name + "\",\"FROMID\":\"" + sessionId + "\",\"TO\":\"" + option + "\",\"PM\":\"" + msg + "\",\"ROOM\":\"" + room + "\"}");
+                                ws.send(JSON.stringify({cmd:'messageUser', from:name, fromId:sessionId, to:option, pm:msg, room:room}));
                                 notServer = true;
                                 serverMessage = "[" + option + "] " + msg;
                             } else {
@@ -458,7 +453,7 @@ $(document).ready(function () {
         msg = sanitizeMessage(msg);
         if (isValidMessage(msg)) {
             msg = linkify(msg);
-            ws.send("{\"CMD\":\"MESSAGE\",\"BODY\":\"" + msg + "\",\"ROOM\":\"" + room + "\",\"SESSIONID\":\"" + sessionId + "\",\"USERNAME\":\"" + name + "\"}");
+            ws.send(JSON.stringify({cmd:'message', body:msg, room:room, sessionId:sessionId, username:name}));
             return false;
         }
 

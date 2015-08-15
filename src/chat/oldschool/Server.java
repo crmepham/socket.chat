@@ -30,7 +30,7 @@ public class Server{
             sessionList.add(session);
 
             // send new user their session id
-            session.getBasicRemote().sendText("{\"SESSIONID\":\""+ session.getId() +"\"}");
+            session.getBasicRemote().sendText("{\"sessionId\":\""+ session.getId() +"\"}");
 
 
         }catch(IOException e){}
@@ -59,7 +59,7 @@ public class Server{
 
             for(int j = 0, jsize = userList.size(); j<jsize; j++) {
                 if(!userList.get(j)[2].equals(userThatLeftRoom)) continue;
-                sessionList.get(j).getBasicRemote().sendText("{\"USERLEFT\":\""+userThatleft+"\"}");
+                sessionList.get(j).getBasicRemote().sendText("{\"userLeft\":\""+userThatleft+"\"}");
             }
 
         }catch(Exception e){}
@@ -78,48 +78,48 @@ public class Server{
 
         try {
 
-            if (json.has("CMD")) {
-                switch (json.getString("CMD")) {
-                    case "USERLEFT":
-                        jsonString = "{\"USERLEFT\":\"" + json.getString("USERLEFTNAME") + "\"}";
-                        room = json.getString("ROOM");
+            if (json.has("cmd")) {
+                switch (json.getString("cmd")) {
+                    case "userLeft":
+                        jsonString = "{\"userLeft\":\"" + json.getString("userLeftName") + "\"}";
+                        room = json.getString("room");
                         broadcast = true;
                         break;
-                    case "PING":
+                    case "ping":
                         // no action necessary
                         // client pings server to keep session alive
                         // needs testing
                         break;
-                    case "MESSAGE":
-                        jsonString = "{\"MESSAGE\":\"" + json.getString("BODY") + "\",\"USERNAME\":\"" + json.getString("USERNAME") + "\",\"SESSIONIDMESSAGE\":\"" + json.getString("SESSIONID") + "\"}";
-                        userId = json.getString("SESSIONID");
-                        room = json.getString("ROOM");
+                    case "message":
+                        jsonString = "{\"message\":\"" + json.getString("body") + "\",\"username\":\"" + json.getString("username") + "\",\"sessionIdMessage\":\"" + json.getString("sessionId") + "\"}";
+                        userId = json.getString("sessionId");
+                        room = json.getString("room");
                         broadcast = true;
                         break;
-                    case "ONLINEUSERS":
+                    case "onlineUsers":
 
-                        room = json.getString("ROOM");
+                        room = json.getString("room");
                         jsonString = buildOnlineUserListJson(userList, room);
-                        userId = json.getString("SESSIONID");
+                        userId = json.getString("sessionId");
                         broadcast = false;
                         break;
-                    case "ADDUSER":
-                        userList.add(new String[]{json.getString("SESSIONID"), json.getString("USERNAME"), json.getString("ROOM")});
-                        jsonString = "{\"RSP\":\"WELCOME\"}";
-                        userId = json.getString("SESSIONID");
+                    case "addUser":
+                        userList.add(new String[]{json.getString("sessionId"), json.getString("username"), json.getString("room")});
+                        jsonString = "{\"rsp\":\"welcome\"}";
+                        userId = json.getString("sessionId");
                         broadcast = false;
                         break;
-                    case "NOTIFYOFNEWUSER":
-                        String username = json.getString("USERNAME");
-                        jsonString = "{\"NOTIFYOFNEWUSER\":\"" + username + "\"}";
-                        room = json.getString("ROOM");
-                        userId = json.getString("SESSIONID");
+                    case "notifyOfNewUser":
+                        String username = json.getString("username");
+                        jsonString = "{\"notifyOfNewUser\":\"" + username + "\"}";
+                        room = json.getString("room");
+                        userId = json.getString("sessionId");
                         broadcast = true;
                         break;
-                    case "MESSAGEUSER":
-                        jsonString = "{\"MESSAGEUSER\":\"" + json.getString("PM") + "\",\"FROM\":\"" + json.getString("FROM") + "\"}";
-                        userId = getIdFromUsername(json.getString("TO"));
-                        room = json.getString("ROOM");
+                    case "messageUser":
+                        jsonString = "{\"messageUser\":\"" + json.getString("pm") + "\",\"from\":\"" + json.getString("from") + "\"}";
+                        userId = getIdFromUsername(json.getString("to"));
+                        room = json.getString("room");
                         broadcast = false;
                         break;
                 }
@@ -131,7 +131,7 @@ public class Server{
 
                         for (int j = 0, jsize = userList.size(); j < jsize; j++) {
                             if (!userList.get(j)[2].equals(room)) continue;
-                            if (json.getString("CMD").equals("NOTIFYOFNEWUSER") && userList.get(j)[0].equals(userId)) continue;
+                            if (json.getString("cmd").equals("notifyOfNewUser") && userList.get(j)[0].equals(userId)) continue;
                             sessionList.get(j).getBasicRemote().sendText(jsonString);
                         }
 
@@ -158,7 +158,7 @@ public class Server{
     private String buildOnlineUserListJson(List<String[]> list, String room){
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        sb.append("\"ONLINEUSERS\":");
+        sb.append("\"onlineUsers\":");
         sb.append("[");
 
         for(int i = 0, size = list.size(); i <size; i++){
@@ -167,9 +167,9 @@ public class Server{
             if(!user[2].equals(room)) continue;
 
                 if(i == size-1){
-                    sb.append("{\"SESSIONID\":\"" + user[0] + "\",\"USERNAME\":\"" + user[1] + "\",\"ROOM\":\"" + user[2] + "\"}");
+                    sb.append("{\"sessionId\":\"" + user[0] + "\",\"username\":\"" + user[1] + "\",\"room\":\"" + user[2] + "\"}");
                 }else{
-                    sb.append("{\"SESSIONID\":\"" + user[0] + "\",\"USERNAME\":\"" + user[1] + "\",\"ROOM\":\"" + user[2] + "\"},");
+                    sb.append("{\"sessionId\":\"" + user[0] + "\",\"username\":\"" + user[1] + "\",\"room\":\"" + user[2] + "\"},");
                 }
         }
 
