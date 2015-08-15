@@ -161,6 +161,12 @@ $(document).ready(function () {
         notificationCounter = 0;
     });
 
+    $("#theme-selector").on("change", function(){
+        var value = $(this).val();
+        changeTheme(value);
+        $("#message-input").focus();
+    });
+
     $(".message-name, .username-link").live("click", function (e) {
         e.preventDefault();
 

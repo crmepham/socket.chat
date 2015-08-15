@@ -100,3 +100,9 @@ h1, h2, h3, p, li, ul, li, input{
     text-decoration: underline;
     font-style: italic;
 }
+#theme-selector{
+    font-size: 0.9em;
+}
+#theme-selector option{
+    margin: 3px;
+}

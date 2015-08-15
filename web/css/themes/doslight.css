@@ -50,3 +50,8 @@ body, html{
 .message-link:active{
     color: #525252;
 }
+
+#theme-selector{
+    color: #fff;
+    background-color: #000;
+}

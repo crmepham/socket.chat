@@ -26,8 +26,13 @@
                 <h1><a class="header" href="http://socket.chat">Socket.chat</a></h1>
                 <span class="online-users-room">r/${room}</span>
                 <br><br><br>
-
-                <h2 class="users-online">Users online</h2>
+                <h2>Change theme</h2>
+                <select id="theme-selector">
+                    <option value="dos" selected>dos</option>
+                    <option value="doslight">doslight</option>
+                </select>
+                <br><br>
+                <h2>Users online</h2>
 
                 <div id="onlineUserListWrapper"></div>
             </div>
