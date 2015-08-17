@@ -37,8 +37,8 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    var url = "ws://localhost:8080/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    //var url = "ws://localhost:8080/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -49,8 +49,9 @@ $(document).ready(function () {
     // timer counts up to 900 seconds.
     var afkTimer = 0;
 
-    var afkNotified = false;
+    var afkTrigger = 900; // 15 minutes
 
+    var afkNotified = false;
 
     // open connection to server
     start(url);
@@ -61,7 +62,7 @@ $(document).ready(function () {
         setInterval(function () {
             ++afkTimer;
 
-            if(afkTimer > 900){
+            if(afkTimer > afkTrigger){
                 // send message to other users that this user is AFK
                 if(!afkNotified){
                     ws.send(JSON.stringify({cmd:'notifyOfAfkUser', username:name, sessionId:sessionId, room:room}));
@@ -96,22 +97,6 @@ $(document).ready(function () {
 
             // incoming messages are always JSON format
             var json = JSON.parse(event.data);
-
-            if(json.hasOwnProperty("notifyOfAfkUser")){
-                print("server", "server", json.notifyOfAfkUser + " has gone afk.");
-
-                // rebuild online user list
-                onlineUserList = updateOnlineUserListAfkUser(json.notifyOfAfkUser);
-                buildOnlineUserListGUI(onlineUserList);
-            }
-
-            if(json.hasOwnProperty("notifyOfAfkReturnedUser")){
-                print("server", "server", json.notifyOfAfkReturnedUser + " has returned.");
-
-                // rebuild online user list
-                onlineUserList = updateOnlineUserListAfkReturnedUser(json.notifyOfAfkReturnedUser);
-                buildOnlineUserListGUI(onlineUserList);
-            }
 
             if (json.hasOwnProperty("messageUser")) {
 
@@ -173,6 +158,22 @@ $(document).ready(function () {
                 }
             }
 
+            if(json.hasOwnProperty("notifyOfAfkUser")){
+                //print("server", "server", json.notifyOfAfkUser + " is afk.");
+
+                // rebuild online user list
+                onlineUserList = updateOnlineUserListAfkUser(json.notifyOfAfkUser);
+                buildOnlineUserListGUI(onlineUserList);
+            }
+
+            if(json.hasOwnProperty("notifyOfAfkReturnedUser")){
+                print("server", "server:", json.notifyOfAfkReturnedUser + " has returned.");
+
+                // rebuild online user list
+                onlineUserList = updateOnlineUserListAfkReturnedUser(json.notifyOfAfkReturnedUser);
+                buildOnlineUserListGUI(onlineUserList);
+            }
+
             if (json.hasOwnProperty("rsp")) {
 
                 if (json.rsp == "welcome") {
@@ -184,7 +185,6 @@ $(document).ready(function () {
 
             viewLatestMessage();
         };
-
     }
 
     // focus message input
@@ -339,7 +339,7 @@ $(document).ready(function () {
     });
 
     function userIsActive(){
-        if(afkTimer > 5 && afkNotified == true){
+        if(afkNotified == true){
             ws.send(JSON.stringify({cmd:'notifyOfAfkReturnedUser', username:name, sessionId:sessionId, room:room}));
             afkNotified = false;
         }
@@ -436,6 +436,7 @@ $(document).ready(function () {
         var output = "";
         for (var i = 0, size = stringArray.length; i < size; i++) {
             if (stringArray[i] == userThatLeft) continue;
+            if (stringArray[i] == "[afk]"+userThatLeft) continue;
             output += stringArray[i] + " ";
         }
 
@@ -504,7 +505,7 @@ $(document).ready(function () {
     function usernameExists(name, json) {
 
         for (var i in json.onlineUsers) {
-            if (json.onlineUsers[i].username == name) return true;
+            if (json.onlineUsers[i].username == name || json.onlineUsers[i].username == "[afk]"+name) return true;
         }
 
         return false;

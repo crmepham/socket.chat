@@ -48,7 +48,7 @@ public class Server{
         for(int i = 0, size = userList.size(); i < size; i++){
 
             if(userList.get(i)[0].equals(id)){
-                userThatleft = userList.get(i)[1];
+                userThatleft = formatIfUserWasAfk(userList.get(i)[1]);
                 userThatLeftRoom = userList.get(i)[2];
                 userList.remove(i);
                 break;
@@ -77,7 +77,6 @@ public class Server{
         String jsonString = null;
 
         try {
-
             if (json.has("cmd")) {
                 switch (json.getString("cmd")) {
                     case "userLeft":
@@ -97,7 +96,6 @@ public class Server{
                         broadcast = true;
                         break;
                     case "onlineUsers":
-
                         room = json.getString("room");
                         jsonString = buildOnlineUserListJson(userList, room);
                         userId = json.getString("sessionId");
@@ -123,12 +121,14 @@ public class Server{
                         broadcast = false;
                         break;
                     case "notifyOfAfkUser":
+                        updateUserListAfk("add", json.getString("username"));
                         jsonString = "{\"notifyOfAfkUser\":\""+ json.getString("username") +"\"}";
                         userId = json.getString("sessionId");
                         room = json.getString("room");
                         broadcast = true;
                         break;
                     case "notifyOfAfkReturnedUser":
+                        updateUserListAfk("remove", json.getString("username"));
                         jsonString = "{\"notifyOfAfkReturnedUser\":\""+ json.getString("username") +"\"}";
                         userId = json.getString("sessionId");
                         room = json.getString("room");
@@ -158,6 +158,28 @@ public class Server{
 
 
         }catch(IOException e){}
+    }
+
+    private String formatIfUserWasAfk(String username){
+        return (username.charAt(0) == '[') ? username.substring(5): username;
+    }
+
+    private void updateUserListAfk(String action, String username){
+        for(int i = 0, size = userList.size(); i<size; i++){
+
+            if(userList.get(i)[1].equals(username)) {
+                if (action.equals("add")) {
+                    userList.get(i)[1] = "[afk]" + userList.get(i)[1];
+                    break;
+
+                }
+                if (action.equals("remove")) {
+                    userList.get(i)[1] = userList.get(i)[1].substring(0, 5) + username;
+                    break;
+
+                }
+            }
+        }
     }
 
     private String getIdFromUsername(String username){
