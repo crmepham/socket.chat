@@ -1,0 +1,108 @@
+/*reset*/
+*{padding:0;outline:0;border:0;}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+    display: block;
+}
+body, html {
+    height: 100%;
+}
+
+iframe, table{
+    border:none;
+}
+
+h1, h2, h3, p, li, ul, li, input{
+    font-family: arial, serif;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 1.0em;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+.maintainSize{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; /* standard */
+}
+.border{
+    border: 1px solid green;
+}
+.fullHeight{
+    height: 100%;
+}
+.heightTop{
+    height: calc(100% - 61px);
+}
+.heightBottom{
+    height: 40px;
+}
+.hidden{
+    display: none;
+}
+.no-padding{
+    padding: 0;
+}
+#send-message{
+    height: 60px;
+}
+#message-input{
+    padding: 10px;
+    width: 100%;
+}
+#message-submit{
+    width: 110px;
+    padding: 10px;
+}
+#messages::-webkit-scrollbar , #online-users::-webkit-scrollbar{
+    width: 1px;
+}
+#messages{
+    height: 100%;
+    overflow: auto;
+    padding-top: 5px;
+}
+.message-name{
+    height: 20px;
+    float: left;
+    margin-right: 5px;
+}
+.message-msg{
+    min-height: 20px;
+    display:flex;
+}
+#online-users{
+    border-left: 1px solid #4d4d4d;
+    height: 100%;
+    overflow: auto;
+    padding-top: 15px;
+}
+.header, .users-online{
+    font-weight: bold;
+}
+.header{
+    font-size: 1.3em;
+}
+.users-online{
+    font-size: 1.2em;
+}
+.username-link{
+    font-size: 0.9em;
+}
+
+.message-link:active, .message-link:visited, .message-link:link, .message-link:hover{
+    text-decoration: underline;
+    font-style: italic;
+}
+#theme-selector{
+    font-size: 0.9em;
+}
+#theme-selector option{
+    margin: 3px;
+}

@@ -1,0 +1,57 @@
+body, html{
+    background-color: #181818;
+}
+
+#message-input{
+    border-top: 1px solid #4d4d4d;
+    color: #fff;
+    background-color: #181818;
+}
+.message-name > .you, .message-name > .sender, .message-name > .server, .message-name > .sent-pm, .message-name > .recieved-pm{
+    font-weight: bold;
+}
+.you, .sender, .server, .sent-pm, .recieved-pm{
+    text-decoration: none;
+}
+.message-text{
+    color: #fff;
+}
+.you, .you:active, .you:visited, .you:hover{
+    color: dodgerblue;
+}
+.sender, .sender:active, .sender:visited, .sender:hover{
+    color: #027c77;
+}
+.server, .server:visited, .server:active, .server:hover{
+    color: #dfd344;
+    font-style: italic;
+}
+.sent-pm, .sent-pm:visited, .sent-pm:active, .sent-pm:hover{
+    color: #57457c;
+    font-style: italic;
+}
+.recieved-pm, .recieved-pm:active, .recieved-pm:visited, .recieved-pm:hover{
+    color: fuchsia;
+}
+.header, .header:hover{
+    color: #fff;
+}
+
+#online-users{
+    border-left: 1px solid #4d4d4d;
+    color: #fff;
+}
+.username-link:active, .username-link:visited, .username-link:link, .username-link:hover{
+    color: #fff
+}
+.message-link:visited, .message-link:link, .message-link:hover{
+    color: #ffffff;
+}
+.message-link:active{
+    color: #525252;
+}
+
+#theme-selector{
+    color: #000;
+    background-color: #fff;
+}
