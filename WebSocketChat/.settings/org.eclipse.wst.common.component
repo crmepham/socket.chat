@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="WebSocketChat">
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes/" source-path="/ImportedClasses"/>
-        <wb-resource deploy-path="/" source-path="/web"/>
-        <property name="context-root" value="WebSocketChat"/>
-        <property name="java-output-path" value="/WebSocketChat/build/classes"/>
-    </wb-module>
-</project-modules>
