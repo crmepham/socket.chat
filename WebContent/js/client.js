@@ -5,6 +5,12 @@ $(document).ready(function () {
 
     // get username
     var name = window.prompt("Enter username:", "");
+    
+    // send user back to homepage if they press cancel
+    if(!name){
+    	window.location.href = "http://socket.chat";
+    }
+    
     name = formatString(name);
     
     //validate username
