@@ -5,10 +5,12 @@ $(document).ready(function () {
 
     // get username
     var name = window.prompt("Enter username:", "");
-
+    name = formatString(name);
+    
     //validate username
     while (!isValidUsername(name)) {
         name = window.prompt("Enter username\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+        name = formatString(name);
     }
 
     // keep message window at bottom (most recent messages)
@@ -37,8 +39,8 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    //var url = "ws://localhost:8080/server";
+    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    var url = "ws://localhost:8080/websocket-chat/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -146,7 +148,8 @@ $(document).ready(function () {
 
             if (json.hasOwnProperty("onlineUsers")) {
                 if (usernameExists(name, json) || name == null) {
-                    name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+                    name = window.prompt("#####Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+                    name = formatString(name);
                     ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
                 } else {
                     // update list of online users
@@ -510,15 +513,20 @@ $(document).ready(function () {
 
         return false;
     }
-
+    
+    function formatString(name) {
+    	name = name.trim();
+    	name = name.replace(/\s/g, '');
+    	return name;
+    }
+    
     function isValidUsername(name) {
-        var fname = name.trim();
-        if (fname.length == 0 || fname.length > 15 || fname == "&nbsp;") {
+        if (name.length == 0 || name.length > 15 || name == "&nbsp;") {
             return false;
         }
-        for (var i = 0, len = fname.length; i < len; i++) {
+        for (var i = 0, len = name.length; i < len; i++) {
 
-            if (fname.charAt(i) == ' ' || fname.charAt(i) == '<' || fname.charAt(i) == '#' || fname.charAt(i) == '>' || fname.charAt(i) == '$' || fname.charAt(i) == '\'' || fname.charAt(i) == '"' || fname.charAt(i) == ',') {
+            if (name.charAt(i) == ' ' || name.charAt(i) == '<' || name.charAt(i) == '#' || name.charAt(i) == '>' || name.charAt(i) == '$' || name.charAt(i) == '\'' || name.charAt(i) == '"' || name.charAt(i) == ',') {
                 return false;
             }
 
