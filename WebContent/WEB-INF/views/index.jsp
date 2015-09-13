@@ -20,8 +20,8 @@
   <div class="row">
     <div class="col-xs-0 col-md-1"></div>
     <div class="intro col-xs-12 col-md-10 center padding-top">
-      <h1 class="hidden-xs">Welcome to socket.chat</h1>
-      <h2 class="hidden-sm hidden-md hidden-lg small-title">Welcome to socket.chat</h2>
+      <h1 class="hidden-xs">Welcome to socket.chat beta</h1>
+      <h2 class="hidden-sm hidden-md hidden-lg small-title">Welcome to socket.chat beta</h2>
       <h2>Simple, private and secure chat rooms</h2>
       <br><br>
       <form id="create-room-form">
@@ -34,11 +34,17 @@
       <br><br>
       <h3>or join one of the community chat rooms</h3><br>
       <p><a href="http://socket.chat/r/lobby">r/lobby</a>, <a href="http://socket.chat/r/sports">r/sports</a>, <a href="http://socket.chat/r/music">r/music</a>, <a href="http://socket.chat/r/technology">r/technology</a>, <a href="http://socket.chat/r/programming">r/programming</a>, <a href="http://socket.chat/r/games">r/games</a>, <a href="http://socket.chat/r/meta">r/meta</a>, <a href="http://socket.chat/r/education">r/education</a></p>
-      <br><br><br>
+      <br>
+      <br>
       <p>In a chat room type /help for a list of commands</p>
       <p>No message data is stored.</p>
       <p>This software is free for anyone to copy and redistribute.</p>
       <p>Github: <a href="https://github.com/final60/websocket-chat">https://github.com/final60/websocket-chat</a></p>
+      <br>
+      <br>
+      <div id="issues">
+      	<p>To report any bugs or request features please create a new issue <a href="https://github.com/final60/websocket-chat/issues" target="_blank">here</a>.</p>
+      </div>
     </div>
     <div class="col-xs-0 col-md-1"></div>
   </div>

@@ -78,3 +78,10 @@ a:link, a:visited, a:active{
 #random-room-submit{
     border-radius: 7px;
 }
+#issues{
+	border: 1px dashed #FFF;
+	padding: 10px;
+}
+#issues a{
+	text-decoration: underline;
+}

@@ -45,8 +45,8 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    var url = "ws://localhost:8080/websocket-chat/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    //var url = "ws://localhost:8080/WebSocketChat/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -154,7 +154,10 @@ $(document).ready(function () {
 
             if (json.hasOwnProperty("onlineUsers")) {
                 if (usernameExists(name, json) || name == null) {
-                    name = window.prompt("#####Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+                    name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
+                    if(!name){
+                    	window.location.href = "http://socket.chat";
+                    }
                     name = formatString(name);
                     ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
                 } else {
