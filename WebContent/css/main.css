@@ -67,6 +67,7 @@ h1, h2, h3, p, li, ul, li, input{
     height: 100%;
     overflow: auto;
     padding-top: 5px;
+    
 }
 .message-name{
     height: 20px;
@@ -76,6 +77,9 @@ h1, h2, h3, p, li, ul, li, input{
 .message-msg{
     min-height: 20px;
     display:flex;
+}
+.message-text{
+     word-break: break-word;
 }
 #online-users{
     border-left: 1px solid #4d4d4d;
