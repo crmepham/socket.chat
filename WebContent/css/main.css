@@ -26,6 +26,9 @@ h1, h2, h3, p, li, ul, li, input{
     -webkit-font-smoothing: antialiased;
 }
 
+#main-container{
+	height: 100%;
+}
 .maintainSize{
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
