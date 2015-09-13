@@ -19,6 +19,9 @@ $(document).ready(function () {
     });
 
     function isValidRoomName(room) {
+    	if (room.replace(/\s/g, '').length == 0) {
+    	    return false;
+    	}
         var regex = new RegExp("^([A-Za-z0-9_\ -]+)$");
         return regex.test(room);
     }
