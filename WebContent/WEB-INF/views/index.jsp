@@ -29,12 +29,12 @@
 		<div class="row">
 			<div class="col-xs-12 textAlignMiddle overflowAuto">
 				<form class="create-room-form hidden-sm hidden-md hidden-lg">
-					<input type="text" name="room"  class="col-xs-8 create-room-name"
+					<input type="text" name="room"  class="col-xs-8 create-room-name" id="create-room-name-small"
 						placeholder="create a room"><input type="submit"
 						name="submit" class="col-xs-4 create-room-submit" value="GO">
 				</form>
 				<form class="create-room-form hidden-xs">
-					<input type="text" name="room" class="create-room-name"
+					<input type="text" name="room" class="create-room-name" id="create-room-name-large"
 						placeholder="create a room"><input type="submit"
 						name="submit" class="create-room-submit" value="GO">
 				</form>

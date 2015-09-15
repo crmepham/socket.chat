@@ -1,9 +1,12 @@
 $(document).ready(function () {
-    $("#create-room-name").focus();
+    $(".create-room-name").focus();
 
-    $("#create-room-form").submit(function (e) {
+    $(".create-room-form").submit(function (e) {
         e.preventDefault();
-        var room = $("#create-room-name").val();
+        var room = $("#create-room-name-large").val();
+        if(room == ""){
+        	room = $("#create-room-name-small").val();
+        }
         if (isValidRoomName(room)) {
             window.location = "http://socket.chat/r/" + room + "";
         } else {
