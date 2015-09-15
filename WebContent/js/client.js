@@ -44,6 +44,8 @@ $(document).ready(function () {
     var windowFocused = true;
 
     var themes = ["dos", "doslight"];
+    
+    var timeStampDisplay = false;
 
     //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
     var url = "ws://localhost:8080/WebSocketChat/server";
@@ -223,9 +225,12 @@ $(document).ready(function () {
     $("#timeStampCheckbox").on("click", function(){
     	if(this.checked){
     		$(".message-timestamp").css("display","inline");
+    		timeStampDisplay = true;
     	}else{
     		$(".message-timestamp").css("display","none");
+    		timeStampDisplay = false;
     	}
+    	$("#message-input").focus();
     });
     
     $(".message-name, .username-link").live("click", function (e) {
@@ -268,6 +273,21 @@ $(document).ready(function () {
                 var noPrint = false;
 
                 switch (cmd) {
+                	
+                	case "timestamp":
+                		if(timeStampDisplay){
+                			timeStampDisplay = false;
+                			$(".message-timestamp").css("display","none");
+                			serverMessage = "Message timestamps have been removed.";
+                			document.getElementById("timeStampCheckbox").checked = false;
+                		}else{
+                			timeStampDisplay = true;
+                			$(".message-timestamp").css("display","inline");
+                			serverMessage = "Messaged timestamps are now being displayed.";
+                			document.getElementById("timeStampCheckbox").checked = true;
+                		}
+                		
+                		break;
                     case "tell":
                         var msg = getMessageFromCommand(cmds);
 
@@ -320,7 +340,7 @@ $(document).ready(function () {
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "help":
-                        serverMessage = "Available commands: help, themes, theme, users, tell, mute, unmute, mutelist, rules, clear.";
+                        serverMessage = "Available commands: help, themes, theme, timestamp, users, tell, mute, unmute, mutelist, rules, clear.";
                         break;
 
                     case "themes":
@@ -446,8 +466,18 @@ $(document).ready(function () {
                 document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-timestamp "+cssClass+"\"><p>"+ timeStamp +"</p></div><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"" + cssClass + "\">" + message + "</div></div>";
                 break;
         }
+        
+        checkToDisplayTimestamp();
     }
 
+    function checkToDisplayTimestamp() {
+    	if(timeStampDisplay){
+    		$(".message-timestamp").css("display","inline");
+    		timeStampDisplay = true;
+    	}
+    	$("#message-input").focus();
+    }
+    
     function updateNotificationTitle() {
         notificationCounter += 1;
         document.title = "(" + notificationCounter + ") " + "r/" + room;
