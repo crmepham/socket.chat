@@ -27,6 +27,7 @@ public class Server {
 		try {
 			// add new user to list of users
 			sessionList.add(session);
+			session.setMaxIdleTimeout(43200000);
 
 			// send new user their session id
 			session.getBasicRemote().sendText("{\"sessionId\":\"" + session.getId() + "\"}");
