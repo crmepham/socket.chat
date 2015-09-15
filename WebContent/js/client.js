@@ -47,8 +47,8 @@ $(document).ready(function () {
     
     var timeStampDisplay = false;
 
-    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    var url = "ws://localhost:8080/WebSocketChat/server";
+    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    //var url = "ws://localhost:8080/WebSocketChat/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -479,8 +479,10 @@ $(document).ready(function () {
     }
     
     function updateNotificationTitle() {
-        notificationCounter += 1;
-        document.title = "(" + notificationCounter + ") " + "r/" + room;
+    	if(document.hasFocus() == false){
+    		notificationCounter += 1;
+        	document.title = "(" + notificationCounter + ") " + "r/" + room;
+    	}
     }
 
     function removeUserFromOnlineList(onlineUserList, userThatLeft) {
