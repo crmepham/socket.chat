@@ -12,7 +12,27 @@ $(document).ready(function () {
 
 
     });
-    $("#random-room-form").submit(function (e) {
+    var clicked = false;
+    $("#questionLarge").click(function(){
+    	
+    	if(clicked){
+    		$("html,body").animate({
+        		scrollTop: $(window).scrollTop() - 550
+    		},2000);
+    		$("#infoContainer").hide();
+        	clicked = false;
+    	}else{
+    		$("#infoContainer").css("display","block");
+        	$("html,body").animate({
+        		scrollTop: $(window).scrollTop() + 550
+    		},2000);
+        	clicked = true;
+    	}
+    	
+    	
+    });
+    
+    $("#randomize").click(function (e) {
         e.preventDefault();
         var room = makeid();
         window.location = "http://socket.chat/r/" + room + "";

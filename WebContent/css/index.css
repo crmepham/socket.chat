@@ -14,9 +14,14 @@ body, html {
 iframe, table{
     border:none;
 }
-
+.border{
+	border: 1px solid red;
+}
+.textAlignMiddle{
+	text-align: center;
+}
 h1, h2, h3, p, a, input{
-    font-family: "Segoe UI", arial;
+    font-family: 'National Light', "Segoe UI", arial;
     font-weight: inherit;
     font-style: inherit;
     font-size: 1.0em;
@@ -34,7 +39,8 @@ h1{
     font-size: 2.5em;
 }
 h2{
-    font-size: 2.0em;
+    font-size: 1.7em;
+    font-weight: normal;
 }
 h3{
     font-size: 1.5em;
@@ -42,41 +48,103 @@ h3{
 a:link, a:visited, a:active{
     color: #fff;
 }
+.overflowAuto{
+	overflow: auto;
+}
+#logo{
+	width: 150px;
+	margin-top: 10%;
+	margin-bottom: 50px;
+}
+#beta{
+	color: #ff3434;
+	text-shadow: 2px 2px 3px #000;
+}
 #create-room-form{
-    height: 30px;
+	margin-top: 50px;
+    min-height: 30px;
 }
 #create-room-name{
-    border: 1px solid #000;
-    border-radius: 7px 0px 0px 7px;
-    background-color: rgba(115, 115, 115, 0.67);
-    color: #fff;
-    padding: 10px;
-    width: 55%;
-
-    -webkit-box-shadow: inset 4px -1px 28px -4px rgba(0,0,0,0.8);
-    -moz-box-shadow: inset 4px -1px 28px -4px rgba(0,0,0,0.8);
-    box-shadow: inset 4px -1px 28px -4px rgba(0,0,0,0.8);
+	border: 5px solid #ff4800;
+	padding: 15px;
+	font-size: 1.7em;
+	font-color: #FFF;
+	background-color: transparent;
+}
+#create-room-name::-webkit-input-placeholder{
+	color: #FFF;
+	font-style: italic;
+}
+#create-room-name::-moz-placeholder {
+   color:    #FFF;
+}
+#create-room-name:-ms-input-placeholder {
+   color:    #FFF;
 }
 #create-room-submit, #random-room-submit{
-    border: 1px solid #000;
-    background: rgba(76,76,76,1);
-    background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 21%, rgba(71,71,71,1) 30%, rgba(44,44,44,1) 39%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,76,76,1)), color-stop(12%, rgba(89,89,89,1)), color-stop(21%, rgba(102,102,102,1)), color-stop(30%, rgba(71,71,71,1)), color-stop(39%, rgba(44,44,44,1)), color-stop(51%, rgba(0,0,0,1)), color-stop(60%, rgba(17,17,17,1)), color-stop(76%, rgba(43,43,43,1)), color-stop(88%, rgba(28,28,28,1)), color-stop(100%, rgba(19,19,19,1)));
-    background: -webkit-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 21%, rgba(71,71,71,1) 30%, rgba(44,44,44,1) 39%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
-    background: -o-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 21%, rgba(71,71,71,1) 30%, rgba(44,44,44,1) 39%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
-    background: -ms-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 21%, rgba(71,71,71,1) 30%, rgba(44,44,44,1) 39%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
-    background: linear-gradient(to bottom, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 21%, rgba(71,71,71,1) 30%, rgba(44,44,44,1) 39%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0 );
-    padding: 10px;
-    color: #fff;
+
 }
 #create-room-submit{
-    width: 110px;
-    border-radius: 0px 7px 7px 0px;
+	border: 5px solid #ff4800;
+	background-color: #ff4800;
+	padding: 15px;
+	font-size: 1.7em;
 }
 
-#random-room-submit{
-    border-radius: 7px;
+.button{
+	
+	padding: 15px;
+	font-size: 1.7em;
+	font-color: #FFF;
+	background-color: #ff4800;
+	display: inline-block;
+	margin-top: 70px;
+	
+}
+
+#infoContainer{
+	height: 550px;
+	background-color: #000;
+	display: none;
+	padding: 20px;
+}
+#infoContainer h2{
+	margin-bottom: 20px;
+}
+#infoContainer p{
+	margin-bottom: 10px;
+	font-size: 1.2em;
+}
+#infoContainer a{
+	text-decoration: underline;
+}
+.container{
+	width: 100% !important;
+}
+#moveable{
+	min-height: 400px;
+}
+#randomize{
+	width: 230px;
+}
+.topSection {
+	height: 700px;
+}
+#questionLarge{
+	width: 70px;
+	height: 70px;
+	position: fixed; bottom:0;right:0;
+	z-index: 999;
+}
+#questionSmall{
+	width: 230px;
+	z-index: 999;
+}
+.fixedRandomHeight{
+	height: 160px;
+}
+.button:hover{
+	text-decoration: none;
 }
 #issues{
 	border: 1px dashed #FFF;
