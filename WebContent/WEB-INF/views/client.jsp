@@ -26,7 +26,9 @@
             <div class="col-md-2 hidden-xs hidden-sm" id="online-users">
                 <h1><a class="header" href="http://socket.chat">Socket.chat</a></h1>
                 <span class="online-users-room">r/${room}</span>
-                <br><br><br>
+                <br><br>
+                <input type="checkbox" id="timeStampCheckbox" onclick="checkTimestamp()">Timestamps
+                <br><br>
                 <h2>Change theme</h2>
                 <select id="theme-selector">
                     <option value="dos" selected>dos</option>

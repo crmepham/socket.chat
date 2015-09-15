@@ -72,6 +72,15 @@ h1, h2, h3, p, li, ul, li, input{
     padding-top: 5px;
     
 }
+.message-timestamp{
+	display: none;
+	float: left;
+	margin-right: 5px;
+}
+.message-timestamp p{
+	font-size: .8em;
+	line-height: 20px;
+}
 .message-name{
     height: 20px;
     float: left;
@@ -112,4 +121,9 @@ h1, h2, h3, p, li, ul, li, input{
 }
 #theme-selector option{
     margin: 3px;
+}
+#timeStampCheckbox {
+	position: relative;
+	top: 2px;
+	margin-right: 2px;
 }

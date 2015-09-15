@@ -219,7 +219,15 @@ $(document).ready(function () {
         changeTheme(value);
         $("#message-input").focus();
     });
-
+    
+    $("#timeStampCheckbox").on("click", function(){
+    	if(this.checked){
+    		$(".message-timestamp").css("display","inline");
+    	}else{
+    		$(".message-timestamp").css("display","none");
+    	}
+    });
+    
     $(".message-name, .username-link").live("click", function (e) {
         e.preventDefault();
 
@@ -351,7 +359,7 @@ $(document).ready(function () {
             $("#message-input").val(lastMessage);
         }
     });
-
+    
     function userIsActive(){
         if(afkNotified == true){
             ws.send(JSON.stringify({cmd:'notifyOfAfkReturnedUser', username:name, sessionId:sessionId, room:room}));
@@ -425,16 +433,17 @@ $(document).ready(function () {
 
     function print(cssClass, name, message) {
 
+    	var timeStamp = getTimeStamp();
 
         switch (cssClass) {
             case "you":
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-timestamp "+cssClass+"\"><p>"+ timeStamp +"</p></div><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
                 break;
             case "sender":
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-timestamp "+cssClass+"\"><p>"+ timeStamp +"</p></div><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"message-text\">" + message + "</div></div>";
                 break;
             default:
-                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"" + cssClass + "\">" + message + "</div></div>";
+                document.getElementById("messages").innerHTML += "<div class=\"message-container \"><div class=\"message-timestamp "+cssClass+"\"><p>"+ timeStamp +"</p></div><div class=\"message-name \"><a class=\"" + cssClass + "\" href=\"#\">" + name + "</a></div><div class=\"message-msg\"><p class=\"" + cssClass + "\">" + message + "</div></div>";
                 break;
         }
     }
@@ -556,7 +565,12 @@ $(document).ready(function () {
         }
 
     }
-
+    
+    function getTimeStamp() {
+    	var date = new Date();
+    	return "[" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "]";
+    }
+    
     function linkify(inputText) {
         var replacedText, replacePattern1, replacePattern2, replacePattern3;
 

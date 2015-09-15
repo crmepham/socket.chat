@@ -51,6 +51,10 @@ body, html{
     color: #525252;
 }
 
+.message-timestamp p{
+	color: #c0c0c0;
+}
+
 #theme-selector{
     color: #fff;
     background-color: #000;

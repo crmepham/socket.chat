@@ -50,6 +50,9 @@ body, html{
 .message-link:active{
     color: #525252;
 }
+.message-timestamp p{
+	opacity: 0.5;
+}
 
 #theme-selector{
     color: #000;
