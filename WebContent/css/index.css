@@ -37,6 +37,7 @@ h1{
 }
 .small-title{
     font-size: 2.5em;
+    margin-top: 20px;
 }
 h2{
     font-size: 1.7em;
@@ -60,31 +61,31 @@ a:link, a:visited, a:active{
 	color: #ff3434;
 	text-shadow: 2px 2px 3px #000;
 }
-#create-room-form{
+.create-room-form{
 	margin-top: 50px;
     min-height: 30px;
 }
-#create-room-name{
+.create-room-name{
 	border: 5px solid #ff4800;
 	padding: 15px;
 	font-size: 1.7em;
 	font-color: #FFF;
 	background-color: transparent;
 }
-#create-room-name::-webkit-input-placeholder{
+.create-room-name::-webkit-input-placeholder{
 	color: #FFF;
 	font-style: italic;
 }
-#create-room-name::-moz-placeholder {
+.create-room-name::-moz-placeholder {
    color:    #FFF;
 }
-#create-room-name:-ms-input-placeholder {
+.create-room-name:-ms-input-placeholder {
    color:    #FFF;
 }
-#create-room-submit, #random-room-submit{
+.create-room-submit, #random-room-submit{
 
 }
-#create-room-submit{
+.create-room-submit{
 	border: 5px solid #ff4800;
 	background-color: #ff4800;
 	padding: 15px;
@@ -103,7 +104,7 @@ a:link, a:visited, a:active{
 }
 
 #infoContainer{
-	height: 550px;
+	height: 800px;
 	background-color: #000;
 	display: none;
 	padding: 20px;
@@ -121,14 +122,8 @@ a:link, a:visited, a:active{
 .container{
 	width: 100% !important;
 }
-#moveable{
-	min-height: 400px;
-}
 #randomize{
 	width: 230px;
-}
-.topSection {
-	height: 700px;
 }
 #questionLarge{
 	width: 70px;
@@ -145,11 +140,4 @@ a:link, a:visited, a:active{
 }
 .button:hover{
 	text-decoration: none;
-}
-#issues{
-	border: 1px dashed #FFF;
-	padding: 10px;
-}
-#issues a{
-	text-decoration: underline;
 }

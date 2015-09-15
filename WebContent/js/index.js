@@ -13,18 +13,18 @@ $(document).ready(function () {
 
     });
     var clicked = false;
-    $("#questionLarge").click(function(){
+    $("#questionLarge, #questionSmall").click(function(){
     	
     	if(clicked){
     		$("html,body").animate({
-        		scrollTop: $(window).scrollTop() - 550
+        		scrollTop: $(window).scrollTop() - 800
     		},2000);
     		$("#infoContainer").hide();
         	clicked = false;
     	}else{
     		$("#infoContainer").css("display","block");
         	$("html,body").animate({
-        		scrollTop: $(window).scrollTop() + 550
+        		scrollTop: $(window).scrollTop() + 800
     		},2000);
         	clicked = true;
     	}

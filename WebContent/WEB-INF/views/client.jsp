@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <meta charset="ISO-8859-1">
     <title>r/${room}</title>
     <meta name="description" content="Simple, private and secure chat rooms.">
     <meta name="author" content="Chris Mepham">
