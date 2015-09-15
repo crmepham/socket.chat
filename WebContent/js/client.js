@@ -79,13 +79,8 @@ $(document).ready(function () {
             }
         }, 1000);
         
-<<<<<<< HEAD
         setInterval(function () { ws.send(JSON.stringify({cmd:'ping', sessionId:sessionId, room:room})); }, 30000);
- 
-=======
-        setInterval(function () { ws.send(JSON.stringify({cmd:'ping', sessionId:sessionId, room:room})); }, 1000);
 
->>>>>>> refs/remotes/origin/master
         ws.onopen = function (event) {
 
             if (reconnect) {
