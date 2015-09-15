@@ -85,9 +85,10 @@ public class Server{
                         broadcast = true;
                         break;
                     case "ping":
-                        // no action necessary
-                        // client pings server to keep session alive
-                        // needs testing
+                    	room = json.getString("room");
+                    	userId = json.getString("sessionId");
+                        jsonString = "{\"pong\":\"from server\"}";
+                        broadcast = false;
                         break;
                     case "message":
                         jsonString = "{\"message\":\"" + json.getString("body") + "\",\"username\":\"" + json.getString("username") + "\",\"sessionIdMessage\":\"" + json.getString("sessionId") + "\"}";
