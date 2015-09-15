@@ -21,7 +21,7 @@ public class Server{
     public void onError(Session session, Throwable t){
         sessionList.remove(session);
     }
-
+ 
 
     @OnOpen
     public void onOpen(Session session){
@@ -69,8 +69,6 @@ public class Server{
     public void onMessage(String msg) throws JSONException {
 
         JSONObject json = new JSONObject(msg.trim());
-
-        //userList.add(new String[]{"1","username","room1"});
         Boolean broadcast = false;
         String userId = "-1";
         String room = null;
@@ -85,9 +83,10 @@ public class Server{
                         broadcast = true;
                         break;
                     case "ping":
-                        // no action necessary
-                        // client pings server to keep session alive
-                        // needs testing
+                    	room = json.getString("room");
+                    	userId = json.getString("sessionId");
+                        jsonString = "{\"pong\":\"from server\"}";
+                        broadcast = false;
                         break;
                     case "message":
                         jsonString = "{\"message\":\"" + json.getString("body") + "\",\"username\":\"" + json.getString("username") + "\",\"sessionIdMessage\":\"" + json.getString("sessionId") + "\"}";

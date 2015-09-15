@@ -45,8 +45,8 @@ $(document).ready(function () {
 
     var themes = ["dos", "doslight"];
 
-    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    //var url = "ws://localhost:8080/WebSocketChat/server";
+    //var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
+    var url = "ws://localhost:8080/WebSocketChat/server";
 
     // stores active interval for auto reconnect
     var reconnect;
@@ -78,7 +78,9 @@ $(document).ready(function () {
                 }
             }
         }, 1000);
-
+        
+        setInterval(function () { ws.send(JSON.stringify({cmd:'ping', sessionId:sessionId, room:room})); }, 30000);
+ 
         ws.onopen = function (event) {
 
             if (reconnect) {
@@ -112,7 +114,7 @@ $(document).ready(function () {
                 updateNotificationTitle();
 
             }
-
+            
             if (json.hasOwnProperty("sessionIdMessage")) {
 
                 if (!isMuted(json.username)) {
