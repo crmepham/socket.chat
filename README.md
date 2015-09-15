@@ -23,6 +23,7 @@ example: <b>socket.chat/r/my private chat room</b></p>
   <li>Clickable links</li>
   <li>Message notification in title</li>
   <li>Toggle display message timestamps</li>
+  <li>Auto AFK toggle after 15 minutes</li>
 </ul>
 
 <h3>Chat commands:</h3>
