@@ -1,4 +1,4 @@
-package chat.oldschool;
+package chat.socket;
 
 import org.json.JSONException;
 import org.json.JSONObject;

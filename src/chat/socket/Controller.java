@@ -1,4 +1,4 @@
-package chat.oldschool;
+package chat.socket;
 
 import java.io.IOException;
 
@@ -33,7 +33,10 @@ public class Controller extends HttpServlet {
 
         if(request.getParameterMap().containsKey("r")){
             room = request.getParameter("r");
+            if(room.equals("")) view = "index.jsp";
             view = "client.jsp";
+        }else{
+        	room = "index.jsp";
         }
 
         // add parameter to request scope
