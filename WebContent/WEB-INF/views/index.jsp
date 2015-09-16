@@ -48,21 +48,19 @@
 				<a href="http://socket.chat"><img src="img/logo-main.gif"
 					alt="websocket chat" id="logo"></a><span id="beta">beta</span>
 				<h2>Simple, private and secure chat rooms</h2>
-				<h2 class="hidden-sm hidden-md hidden-lg small-title">Welcome to socket.chat beta</h2>
+				<h2 class="hidden-sm hidden-md hidden-lg small-title">Welcome to socket.chat</h2>
 				<h1 class="hidden-xs">Welcome to socket.chat</h1>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 textAlignMiddle overflowAuto">
 				<form class="create-room-form hidden-sm hidden-md hidden-lg">
-					<input type="text" name="room"  class="col-xs-8 create-room-name" id="create-room-name-small"
-						placeholder="create a room"><input type="submit"
-						name="submit" class="col-xs-4 create-room-submit" value="GO">
+					<input type="text" name="room"  class="col-xs-8 create-room-name" id="create-room-name-small" 
+					placeholder="create a room"><input type="submit" name="submit" class="col-xs-4 create-room-submit" value="GO">
 				</form>
 				<form class="create-room-form hidden-xs">
-					<input type="text" name="room" class="create-room-name" id="create-room-name-large"
-						placeholder="create a room"><input type="submit"
-						name="submit" class="create-room-submit" value="GO">
+					<input type="text" name="room" class="create-room-name" id="create-room-name-large" 
+					placeholder="create a room"><input type="submit" name="submit" class="create-room-submit" value="GO">
 				</form>
 			</div>
 		</div>

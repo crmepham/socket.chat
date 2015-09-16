@@ -3,6 +3,8 @@ package chat.socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import dao.DAO;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +27,14 @@ public class Server {
 	@OnOpen
 	public void onOpen(Session session) {
 		try {
+			
 			// add new user to list of users
 			sessionList.add(session);
 			session.setMaxIdleTimeout(43200000);
 
 			// send new user their session id
 			session.getBasicRemote().sendText("{\"sessionId\":\"" + session.getId() + "\"}");
-
+			
 		} catch (IOException e) {
 		}
 	}
@@ -75,6 +78,7 @@ public class Server {
 		String userId = "-1";
 		String room = null;
 		String jsonString = null;
+		DAO dao = new DAO();
 
 		try {
 			if (json.has("cmd")) {
@@ -110,6 +114,7 @@ public class Server {
 					jsonString = "{\"rsp\":\"welcome\"}";
 					userId = json.getString("sessionId");
 					broadcast = false;
+					dao.persistSession();
 					break;
 				case "notifyOfNewUser":
 					String username = json.getString("username");
