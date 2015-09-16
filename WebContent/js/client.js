@@ -46,7 +46,7 @@ $(document).ready(function () {
     var themes = ["dos", "doslight"];
     
     var timeStampDisplay = false;
-
+    
     var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
     //var url = "ws://localhost:8080/WebSocketChat/server";
 
@@ -278,12 +278,12 @@ $(document).ready(function () {
                 		if(timeStampDisplay){
                 			timeStampDisplay = false;
                 			$(".message-timestamp").css("display","none");
-                			serverMessage = "Message timestamps have been removed.";
+                			serverMessage = "Message timestamps have been disabled.";
                 			document.getElementById("timeStampCheckbox").checked = false;
                 		}else{
                 			timeStampDisplay = true;
                 			$(".message-timestamp").css("display","inline");
-                			serverMessage = "Messaged timestamps are now being displayed.";
+                			serverMessage = "Message timestamps are enabled.";
                 			document.getElementById("timeStampCheckbox").checked = true;
                 		}
                 		

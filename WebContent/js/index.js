@@ -22,7 +22,10 @@ $(document).ready(function () {
     		$("html,body").animate({
         		scrollTop: $(window).scrollTop() - 800
     		},2000);
-    		$("#infoContainer").hide();
+    		setTimeout(function(){
+    			$("#infoContainer").hide();
+    		}, 2000);
+    		
         	clicked = false;
     	}else{
     		$("#infoContainer").css("display","block");
