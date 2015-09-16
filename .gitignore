@@ -15,3 +15,4 @@ out/
 .idea/
 /build/
 /target/
+/src/dao/Configuration.java
