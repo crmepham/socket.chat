@@ -46,10 +46,10 @@
 		<div class="row">
 			<div class="col-xs-12 textAlignMiddle">
 				<a href="https://socket.chat"><img src="img/logo-main.gif"
-					alt="websocket chat" id="logo"></a><span id="beta">beta</span>
+					alt="websocket chat" id="logo"></a><span id="beta"></span>
 				<h2>Simple, private and secure chat rooms</h2>
 				<h2 class="hidden-sm hidden-md hidden-lg small-title">Welcome to socket.chat</h2>
-				<h1 class="hidden-xs">Welcome to socket.chat</h1>
+				<h1 class="hidden-xs">Welcome to socket.chat</h1><br><br>
 			</div>
 		</div>
 		<div class="row">
@@ -65,8 +65,11 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 textAlignMiddle overflowAuto">
-				<a href="#" class="button" id="randomize">RANDOMIZE</a>
+			<div class="col-xs-12 textAlignMiddle overflowAuto hidden-xs">
+				<a href="#" class="button" class="randomize-button" id="randomize-large">RANDOMIZE</a>
+			</div>
+			<div class="col-xs-12 textAlignMiddle overflowAuto hidden-sm hidden-md hidden-lg">
+				<a href="#" class="button" class="randomize-button" id="randomize">RANDOMIZE</a>
 			</div>
 		</div>
 		<div class="row fixedRandomHeight">
@@ -78,21 +81,22 @@
 		
 		<div class="row">
 			<div class="col-xs-12 overflowAuto moveable" id="infoContainer">
-				<h2>What is socket.chat?</h2>
-				<p>Socket.chat was created using the super fast websocket protocol, which allows bi-directional communication between a client and a server. Unlike
-				most traditional, text-based web communications, Socket.chat doesn't need to store your messages in a database for them to be retrieved later by other
-				clients. The server will instantly ping those messages back out to other user's in the same chat room as you.</p>
-				
-				<h2>How is it "private and secure"?</h2>
-				<p>Socket.chat doesn't list rooms. That means other user's will never know the name of your room, so as long as you create a unique enough name, no
-				 one will be able to join it, except the people you tell.</p>
-				<p>Socket.chat uses the encrypted protocols HTTPS/WSS. These are the secure protocols that encrypt your messages so that nosey people can't
-				 read them.</p>
-				<p>Finally, Socket.chat doesn't store any personal information about it's users both locally or in our database. So your chat's are private, untracked and secure.</p>
-				
-				<h2>Some other useful bits and bobs!</h2>
-				<p>When in a chat room type /help for a list of commands.</p>
-				<p>To report any bugs or request features please create a new issue <a href="https://github.com/final60/websocket-chat/issues">here</a>.</p>
+				<div class="mod-border">
+					<h2>What is socket.chat?</h2>
+					<p>Socket.chat enables secure, private and non-tracked chat rooms. Unlike most chat room services, socket.chat doesn't make you register, doesn't
+					retain your personal information or messages, and doesn't leave any cookies on your computer.</p>
+				</div>
+				<div class="mod-border">
+					<h2>How is it "private and secure"?</h2>
+					<p>Socket.chat doesn't list any rooms. You can create a room name containing any alpha-numeric characters and spaces.</p>
+					<p>Socket.chat uses the encryption protocols HTTPS/WSS and a strong modern cypher suite. This ensures that the messages you send are secure from "man in the middle" attacks.
+					<p>Finally, Socket.chat doesn't retain any personal information about it's users both locally or in our database. So your chat's are private, untracked and secure.</p>
+				</div>
+				<div class="mod-border">
+					<h2>Some useful information</h2>
+					<p>When in a chat room type /help for a list of commands.</p>
+					<p>To report any bugs or request features please create a new issue <a href="https://github.com/final60/websocket-chat/issues">here</a>.</p>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -108,6 +108,7 @@ a:link, a:visited, a:active{
 	background-color: #000;
 	display: none;
 	padding: 20px;
+	font-family: verdana, 'Lucida grande', helvetica, arial, serif;
 }
 #infoContainer h2{
 	margin-bottom: 20px;
@@ -122,8 +123,11 @@ a:link, a:visited, a:active{
 .container{
 	width: 100% !important;
 }
-#randomize{
+#randomize-large{
 	width: 230px;
+}
+#randomize{
+	width: 100%;
 }
 #questionLarge{
 	width: 70px;
@@ -132,7 +136,7 @@ a:link, a:visited, a:active{
 	z-index: 999;
 }
 #questionSmall{
-	width: 230px;
+	width: 100%;
 	z-index: 999;
 }
 .fixedRandomHeight{
@@ -140,4 +144,10 @@ a:link, a:visited, a:active{
 }
 .button:hover{
 	text-decoration: none;
+}
+.mod-border{
+	border: 1px solid #4d4d4d;
+	padding: 10px;
+	width: 100%;
+	margin-bottom: 20px;
 }
