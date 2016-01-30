@@ -20,11 +20,15 @@ Finally, Socket.chat doesn't retain any personal information about it's users bo
   <li>Message another user in this room</li>
   <li>Mute another user in this room</li>
   <li>Chat rooms are not listed anywhere, so no one will find your chat room</li>
+  <li>HTTPS and WSS encryption</li>
   <li>Message history is not stored</li>
   <li>Clickable links</li>
   <li>Message notification in title</li>
   <li>Toggle display message timestamps</li>
   <li>Auto AFK toggle after 15 minutes</li>
+  <li>Message timestamps</li>
+  <li>Audio notification of new chat message</li>
+  <li>Audio notification of new private message</li>
 </ul>
 
 <h3>Chat commands:</h3>
