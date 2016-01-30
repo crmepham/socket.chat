@@ -38,7 +38,7 @@ $(document).ready(function () {
     	
     });
     
-    $(".randomize-button").click(function (e) {
+    $("#randomize, #randomize-large").click(function (e) {
         e.preventDefault();
         var room = makeid();
         window.location = "https://socket.chat/r/" + room + "";

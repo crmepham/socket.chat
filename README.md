@@ -1,15 +1,16 @@
-# Websocket Chat (Alpha)
-<a href="http://socket.chat"><img src="http://i.imgur.com/zRTFQ4z.png" title="source: imgur.com" /></a>
-Socket.chat is a chat room service that uses HTML5 Websockets and Java Endpoint to provide a full featured chat. It is private and untracked.
-<h3>What's good about it?</h3>
-<p>It doesn't list chat rooms, so no one will know your chat room exists. It doesn't store any messages on the server. Soon it will be fully encrypted using
-HTTPS/WSS.</p>
+# socket.chat 
+<h3>What is socket.chat?</h3>
 
-<h3>How to use</h3>
-<p>You can join one of the community chat rooms by navigating to <a href="http://socket.chat">socket.chat</a> and
-clicking on one of the rooms listed.</p>
-<p>You can create your own private chat room using the following URI format: <b>socket.chat/r/ #any alpha-numeric characters and spaces#</b>. For 
-example: <b>socket.chat/r/my private chat room</b></p>
+Socket.chat enables secure, private and non-tracked chat rooms. Unlike most chat room services, socket.chat doesn't make you register, doesn't retain your personal information or messages, and doesn't leave any cookies on your computer.
+
+<h3>How is it "private and secure"?</h3>
+
+Socket.chat doesn't list any rooms. You can create a room name containing any alpha-numeric characters and spaces.
+
+Socket.chat uses the encryption protocols HTTPS/WSS and a strong modern cypher suite. This ensures that the messages you send are secure from "man in the middle" attacks.
+
+Finally, Socket.chat doesn't retain any personal information about it's users both locally or in our database. So your chat's are private, untracked and secure.
+
 <h3>Current features:</h3>
 <ul>
   <li>Join any room</li>
@@ -29,6 +30,8 @@ example: <b>socket.chat/r/my private chat room</b></p>
 <h3>Chat commands:</h3>
 <ul>
   <li><b>/help</b> - displays a list of available commands</li>
+  <li><b>/chatnotify</b> - audio notification of new chat message</li>
+  <li><b>/pmnotify</b> - audio notification of new private message</li>
   <li><b>/themes</b> - displays a list of available themes</li>
   <li><b>/theme #themename#</b> - changes to specified theme</li>
     <li><b>/timestamp</b> - toggle message timestamp display</li>
@@ -41,10 +44,4 @@ example: <b>socket.chat/r/my private chat room</b></p>
   <li><b>/clear</b> - clears the chat history</li>
   <li><b>UP ARROW</b> - gets last message sent</li>
   <li><b>TAB</b> - gets last user you private messaged</li>
-</ul>
-
-<p><b>To do:</b></p>
-<ul>
-  <li>Implement HTTPS</li>
-  <li>Implement secure websockets</li>
 </ul>
