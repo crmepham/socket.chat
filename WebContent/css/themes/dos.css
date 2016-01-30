@@ -14,10 +14,10 @@ body, html{
     text-decoration: none;
 }
 .message-text{
-    color: #fff;
+    color: #eaebed;
 }
 .you, .you:active, .you:visited, .you:hover{
-    color: dodgerblue;
+    color: #3b7dc7;
 }
 .sender, .sender:active, .sender:visited, .sender:hover{
     color: #027c77;
@@ -55,6 +55,7 @@ body, html{
 }
 
 #theme-selector{
-    color: #000;
-    background-color: #fff;
+    color: #fff;
+    background-color: #181818;
+    border: 1px solid #4d4d4d;
 }

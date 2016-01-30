@@ -8,7 +8,7 @@ $(document).ready(function () {
         	room = $("#create-room-name-small").val();
         }
         if (isValidRoomName(room)) {
-            window.location = "http://socket.chat/r/" + room + "";
+            window.location = "https://socket.chat/r/" + room + "";
         } else {
             alert("Unable to create room\nPermitted characters: A-Z, a-z, 0-9, _, - and space.");
         }
@@ -41,7 +41,7 @@ $(document).ready(function () {
     $("#randomize").click(function (e) {
         e.preventDefault();
         var room = makeid();
-        window.location = "http://socket.chat/r/" + room + "";
+        window.location = "https://socket.chat/r/" + room + "";
     });
 
     function isValidRoomName(room) {

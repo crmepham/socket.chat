@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     // get room name
     var room = document.getElementById("room").innerHTML;
@@ -8,12 +8,12 @@ $(document).ready(function () {
     
     // send user back to homepage if they press cancel
     if(!name){
-    	window.location.href = "http://socket.chat";
+    	window.location.href = "https://socket.chat";
     }
     
     name = formatString(name);
     
-    //validate username
+    // validate username
     while (!isValidUsername(name)) {
         name = window.prompt("Enter username\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
         name = formatString(name);
@@ -47,9 +47,11 @@ $(document).ready(function () {
     
     var timeStampDisplay = false;
     
-    var url = "ws://crmepham.no-ip.biz:8080/WebSocketChat/server";
-    //var url = "ws://localhost:8080/WebSocketChat/server";
-
+    var chatNotification = false;
+    
+    var pmNotification = false;
+    var url = "wss://socket.chat:3000";
+    
     // stores active interval for auto reconnect
     var reconnect;
 
@@ -90,7 +92,7 @@ $(document).ready(function () {
                 // update user list
                 ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
                 reconnect = 0;
-                print("server", "server:", "reconnect successful");
+                print("server", "*", "reconnect successful");
             }
         };
 
@@ -100,7 +102,7 @@ $(document).ready(function () {
                 reconnect = setInterval(function () {
                     start(url)
                 }, 3000);
-                print("server", "server:", "disconnected. Attempting to reconnect...");
+                print("server", "*", "Server disconnected. Attempting to reconnect...");
             }
 
         };
@@ -111,30 +113,37 @@ $(document).ready(function () {
             var json = JSON.parse(event.data);
 
             if (json.hasOwnProperty("messageUser")) {
-
+            	if(pmNotification){
+            		var audio = document.getElementById("audio");
+                    audio.play();
+            	}
                 print("recieved-pm", json.from, json.messageUser);
                 updateNotificationTitle();
 
             }
             
-            if (json.hasOwnProperty("sessionIdMessage")) {
+            if (json.hasOwnProperty("broadcast")) {
 
                 if (!isMuted(json.username)) {
-                    if (json.sessionIdMessage.toString() == sessionId) {
+                    if (json.username === name) {
 
-                        print("you", json.username, json.message);
+                        print("you", json.username, json.broadcast);
 
                     } else {
 
-                        print("sender", json.username, json.message);
+                        print("sender", json.username, json.broadcast);
                         updateNotificationTitle();
+                        if(chatNotification){
+                        	var audio = document.getElementById("audio");
+                        	audio.play();
+                        }
                     }
                 }
             }
 
             if (json.hasOwnProperty("notifyOfNewUser")) {
 
-                print("server", "server:", json.notifyOfNewUser + " joined the room.");
+                print("server", "*", json.notifyOfNewUser + " joined the room.");
                 onlineUserList += " " + json.notifyOfNewUser;
                 buildOnlineUserListGUI(onlineUserList);
             }
@@ -144,38 +153,36 @@ $(document).ready(function () {
             }
 
             if (json.hasOwnProperty("userLeft")) {
-                print("server", "server:", json.userLeft + " left the room.");
+                print("server", "*", json.userLeft + " left the room.");
                 var removedList = removeUserFromOnlineList(onlineUserList, json.userLeft);
                 onlineUserList = removedList;
                 buildOnlineUserListGUI(removedList);
             }
 
             // if json has SESSIONID then request a list of online users
-            if (json.hasOwnProperty("sessionId")) {
-                sessionId = json.sessionId;
-                ws.send(JSON.stringify({cmd: 'onlineUsers', sessionId: sessionId, room: room}));
+            if(json.hasOwnProperty("start")) {
+            	ws.send(JSON.stringify({cmd: 'onlineUsers', room: room}));
             }
 
             if (json.hasOwnProperty("onlineUsers")) {
                 if (usernameExists(name, json) || name == null) {
                     name = window.prompt("Username already in use: \nEnter a different username.\nInvalid characters: (\",<#>$)\nBetween 1-15 characters", "");
                     if(!name){
-                    	window.location.href = "http://socket.chat";
+                    	window.location.href = "https://socket.chat";
                     }
                     name = formatString(name);
-                    ws.send(JSON.stringify({cmd:'onlineUsers', sessionId:sessionId, room:room}));
+                    ws.send(JSON.stringify({cmd:'onlineUsers', room:room}));
                 } else {
                     // update list of online users
                     onlineUserList = updateOnlineUserList(json) + name;
                     buildOnlineUserListGUI(onlineUserList);
 
                     // send user details (session id, room, username)
-                    ws.send(JSON.stringify({cmd:'addUser', sessionId:sessionId, username:name, room:room}));
+                    ws.send(JSON.stringify({cmd:'addUser', username:name, room:room}));
                 }
             }
 
             if(json.hasOwnProperty("notifyOfAfkUser")){
-                //print("server", "server", json.notifyOfAfkUser + " is afk.");
 
                 // rebuild online user list
                 onlineUserList = updateOnlineUserListAfkUser(json.notifyOfAfkUser);
@@ -183,7 +190,7 @@ $(document).ready(function () {
             }
 
             if(json.hasOwnProperty("notifyOfAfkReturnedUser")){
-                print("server", "server:", json.notifyOfAfkReturnedUser + " has returned.");
+                print("server", "*", json.notifyOfAfkReturnedUser + " has returned.");
 
                 // rebuild online user list
                 onlineUserList = updateOnlineUserListAfkReturnedUser(json.notifyOfAfkReturnedUser);
@@ -194,11 +201,10 @@ $(document).ready(function () {
 
                 if (json.rsp == "welcome") {
 
-                    print("server", "server:", "Users online: " + onlineUserList);
+                    print("server", "*", "Users online: " + onlineUserList);
                     ws.send(JSON.stringify({cmd:'notifyOfNewUser', username:name, room:room, sessionId:sessionId}));
                 }
             }
-
             viewLatestMessage();
         };
     }
@@ -214,6 +220,24 @@ $(document).ready(function () {
         userIsActive();
         document.title = "r/" + room;
         notificationCounter = 0;
+    });
+    
+    $("#chatAlertCheckbox").on("click", function(){
+        if(this.checked){
+        	chatNotification = true;
+    	}else{
+    		chatNotification = false;
+    	}
+        $("#message-input").focus();
+    });
+    
+    $("#pmAlertCheckbox").on("click", function(){
+        if(this.checked){
+    		pmNotification = true;
+    	}else{
+    		pmNotification = false;
+    	}
+        $("#message-input").focus();
     });
 
     $("#theme-selector").on("change", function(){
@@ -273,6 +297,29 @@ $(document).ready(function () {
                 var noPrint = false;
 
                 switch (cmd) {
+                
+	                case "pmnotify":
+	                	if(pmNotification){
+	                		pmNotification = false;
+	                		serverMessage = "Private message sound notifications have been disabled.";
+	            			document.getElementById("pmAlertCheckbox").checked = false;
+	                	}else{
+	                		pmNotification = true;
+	                		serverMessage = "Private message sound notifications have been enabled.";
+	            			document.getElementById("pmAlertCheckbox").checked = true;
+	                	}
+	                	break;
+	                case "chatnotify":
+	                	if(chatNotification){
+	                		chatNotification = false;
+	                		serverMessage = "Chat sound notifications have been disabled.";
+                			document.getElementById("chatAlertCheckbox").checked = false;
+	                	}else{
+	                		chatNotification = true;
+	                		serverMessage = "Chat sound notifications have been enabled.";
+                			document.getElementById("chatAlertCheckbox").checked = true;
+	                	}
+	                	break;
                 	
                 	case "timestamp":
                 		if(timeStampDisplay){
@@ -340,7 +387,7 @@ $(document).ready(function () {
                         document.getElementById("messages").innerHTML = "";
                         break;
                     case "help":
-                        serverMessage = "Available commands: help, themes, theme, timestamp, users, tell, mute, unmute, mutelist, rules, clear.";
+                        serverMessage = "Available commands: help, themes, theme, timestamp, users, tell, pmnotify, chatnotify, mute, unmute, mutelist, rules, clear.";
                         break;
 
                     case "themes":
@@ -366,7 +413,7 @@ $(document).ready(function () {
                     if (notServer) {
                         print("sent-pm", name, serverMessage);
                     } else {
-                        print("server", "server:", serverMessage);
+                        print("server", "*", serverMessage);
                     }
                 }
             }
@@ -592,7 +639,7 @@ $(document).ready(function () {
         msg = sanitizeMessage(msg);
         if (isValidMessage(msg)) {
             msg = linkify(msg);
-            ws.send(JSON.stringify({cmd:'message', body:msg, room:room, sessionId:sessionId, username:name}));
+            ws.send(JSON.stringify({cmd:'message', body:msg}));
             return false;
         }
 
@@ -606,15 +653,16 @@ $(document).ready(function () {
     function linkify(inputText) {
         var replacedText, replacePattern1, replacePattern2, replacePattern3;
 
-        //URLs starting with http://, https://, or ftp://
+        // URLs starting with http://, https://, or ftp://
         replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
         replacedText = inputText.replace(replacePattern1, "<a class='message-link' href='$1' target='_blank'>$1</a>");
 
-        //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+        // URLs starting with "www." (without // before it, or it'd re-link the
+		// ones done above).
         replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
         replacedText = replacedText.replace(replacePattern2, "$1<a class='message-link' href='http://$2' target='_blank'>$2</a>");
 
-        //Change email addresses to mailto:: links.
+        // Change email addresses to mailto:: links.
         replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
         replacedText = replacedText.replace(replacePattern3, "<a class='message-link' href='mailto:$1'>$1</a>");
 
@@ -635,6 +683,6 @@ $(document).ready(function () {
     function changeTheme(option) {
 
         var link = document.getElementById("theme-link");
-        link.href = "../css/themes/" + option + ".css";
+        link.href = "https://socket.chat/css/themes/" + option + ".css";
     }
 });

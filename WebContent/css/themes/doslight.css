@@ -23,7 +23,7 @@ body, html{
     color: #027c77;
 }
 .server, .server:visited, .server:active, .server:hover{
-    color: #df9600;
+    color: #000000;
     font-style: italic;
 }
 .sent-pm, .sent-pm:visited, .sent-pm:active, .sent-pm:hover{
@@ -56,6 +56,7 @@ body, html{
 }
 
 #theme-selector{
-    color: #fff;
-    background-color: #000;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #000;
 }
