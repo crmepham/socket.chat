@@ -53,10 +53,15 @@
                 </div>
                 <br>
                 <div class="mod-border">
+                <h2>Notifications</h2>
                 <p class="checkboxText"><input type="checkbox" id="timeStampCheckbox" onclick="checkTimestamp()"> Timestamps</p>
                 <p class="checkboxText"><input type="checkbox" id="chatAlertCheckbox" onclick="checkTimestamp()"><span class="moveUp"> Chat alert</span></p>
                 <p class="checkboxText"><input type="checkbox" id="pmAlertCheckbox" onclick="checkTimestamp()"><span class="moveUp"> PM Alert</span></p>
-                <audio id="audio" src="https://socket.chat/audio/chat-notification.mp3" ></audio>
+                <audio controls id="audio">
+                	<source src="https://socket.chat/audio/chat-notification.mp3" type="audio/mpeg">
+                	<source src="https://socket.chat/audio/chat-notification.wav" type="audio/wav">
+                	<source src="https://socket.chat/audio/chat-notification.ogg" type="audio/ogg">
+                </audio>
                 </div>
                 <br>
                 <div class="mod-border">
@@ -71,6 +76,19 @@
                 <h2>Users online</h2>
 
                 <div id="onlineUserListWrapper"></div>
+                </div>
+                <br>
+                <div class="mod-border add"><!--  rejected by google for not enough text content on client webpage -->
+                	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- socket.chat -->
+					<ins class="adsbygoogle"
+					     style="display:block"
+					     data-ad-client="ca-pub-7691057862525139"
+					     data-ad-slot="5051281206"
+					     data-ad-format="auto"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
     // get room name
     var room = document.getElementById("room").innerHTML;
 

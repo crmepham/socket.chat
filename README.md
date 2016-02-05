@@ -1,3 +1,5 @@
+<i>Note: The server code was re-written in node.js and migrated to <a href="https://github.com/final60/socket.chat.server" alt="socket.chat.server">this repository</a>.</i>
+
 # socket.chat 
 <h3>What is socket.chat?</h3>
 

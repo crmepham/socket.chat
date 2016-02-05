@@ -143,6 +143,7 @@ h1, h2, h3, p, li, ul, li, input{
 	border: 1px solid #4d4d4d;
 	padding: 10px;
 	width: 100%;
+	overflow: hidden;
 }
 #logo-icon{
 	width: 80px;
@@ -150,4 +151,15 @@ h1, h2, h3, p, li, ul, li, input{
 }
 #room-name{
 	text-align: center;
+}
+.hide-scroll-bar{
+	width: 100%;
+	overflow:hidden;
+}
+.add{ /*rejected by google for not enough text content on client webpage*/
+	height: 300px;
+	display: none;
+}
+#audio{
+	display: none;
 }
