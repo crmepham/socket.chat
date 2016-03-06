@@ -100,6 +100,7 @@ a:link, a:visited, a:active{
 	background-color: #ff4800;
 	display: inline-block;
 	margin-top: 70px;
+	text-decoration: none;
 	
 }
 
@@ -116,9 +117,6 @@ a:link, a:visited, a:active{
 #infoContainer p{
 	margin-bottom: 10px;
 	font-size: 1.2em;
-}
-#infoContainer a{
-	text-decoration: underline;
 }
 .container{
 	width: 100% !important;

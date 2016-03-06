@@ -35,6 +35,11 @@ public class Controller extends HttpServlet {
             room = request.getParameter("r");
             view = "client.jsp";
         }
+        
+        if(request.getParameterMap().containsKey("page")){
+            room = request.getParameter("page");
+            view = room + ".jsp";
+        }
 
         // add parameter to request scope
         request.setAttribute("room", room);

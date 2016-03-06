@@ -97,11 +97,14 @@
 					<p>When in a chat room type /help for a list of commands.</p>
 					<p>To report any bugs or request features please create a new issue <a href="https://github.com/final60/websocket-chat/issues">here</a>.</p>
 				</div>
+				<div class="col-xs-12 textAlignMiddle overflowAuto hidden-xs">
+					<a href="https://socket.chat/page/benchmark" class="button benchmark" >BENCHMARK</a>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://socket.chat/js/index.js"></script>
 	<script src="https://socket.chat/js/bootstrap.min.js"></script>
 </body>

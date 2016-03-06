@@ -1,0 +1,93 @@
+/*reset*/
+*{padding:0;outline:0;border:0;}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+    display: block;
+}
+body, html {
+    height: 100%;
+    background-color: #000;
+}
+
+iframe, table{
+    border:none;
+}
+
+h1, h2, h3, p, li, ul, li, input, a{
+    font-family: verdana, 'Lucida grande', helvetica, arial, serif;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 1.0em;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: #FFF;
+    -webkit-font-smoothing: antialiased;
+}
+
+p{
+	font-size: 1.2em;
+	font-weight: 200;	
+}
+.bold{
+	font-weight: 300;
+}
+
+a, a:hover{
+	color: #FFF;
+	text-decoration: none;
+}
+h1{
+	font-size: 2.5em;
+	color: #FFF;
+}
+
+h3{
+	font-size: 1.8em;
+}
+.border{
+	border: 1px solid red;
+}
+
+.centerText{
+	text-align: center;
+}
+
+.header{
+	padding-top: 50px;
+}
+
+.button{
+	
+	padding: 15px 30px 15px 30px;
+	font-size: 1.7em;
+	font-color: #FFF;
+	background-color: #ff4800;
+	display: inline-block;
+	text-decoration: none;
+	
+}
+
+.paddingTop{
+	padding-top: 100px;
+}
+
+.spinner{
+}
+
+.spinnerContainer{
+	display: none;
+}
+
+.resultsRow{
+	text-align: center;
+	display: none;
+	margin-bottom: 30px;
+}
+
+.resultsColumn{
+	margin-bottom: 20px;
+}
